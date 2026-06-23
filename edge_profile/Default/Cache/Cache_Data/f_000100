@@ -1,0 +1,1186 @@
+WEBVTT
+
+00:00:00.050 --> 00:00:03.524
+Welcome to Perspectives by Slunk. Here's an uncomfortable
+
+00:00:03.524 --> 00:00:06.639
+truth most Cisos already know but few say out loud.
+
+00:00:06.639 --> 00:00:09.993
+Somewhere in critical infrastructure, a state sponsored
+
+00:00:09.993 --> 00:00:13.587
+actor has been sitting quietly inside someone's network for
+
+00:00:13.587 --> 00:00:17.121
+five years. Not days, not months, years. And the wild part
+
+00:00:17.121 --> 00:00:20.356
+isn't that they got in. It's that the entire security
+
+00:00:20.356 --> 00:00:23.770
+operating model was built for a fight that ends in days.
+
+00:00:23.770 --> 00:00:27.364
+We're playing checkers. They're playing A5 year chess game.
+
+00:00:27.364 --> 00:00:30.310
+Today on Perspectives we're going to talk about.
+
+00:00:30.310 --> 00:00:33.682
+With actually takes to architect for that, not more tools,
+
+00:00:33.682 --> 00:00:37.111
+not more dashboards, but a fundamentally different security
+
+00:00:37.111 --> 00:00:40.198
+posture. My guests spent more than two decades inside
+
+00:00:40.198 --> 00:00:43.513
+Canada's signals agency. She knows how these actors think
+
+00:00:43.513 --> 00:00:46.942
+because she used to think just like them. My guest today is
+
+00:00:46.942 --> 00:00:50.028
+Kimberly Osmond. Kimberly is the security advisor for
+
+00:00:50.028 --> 00:00:53.343
+Splunk in Canada. But the reason why I wanted her here on
+
+00:00:53.343 --> 00:00:56.773
+this conversation isn't her current title. It's what became
+
+00:00:56.773 --> 00:01:00.202
+what she did before Kimberly spent over 23 years inside the
+
+00:01:00.202 --> 00:01:01.140
+communications.
+
+00:01:01.140 --> 00:01:04.331
+Security establishment, that's Canada's equivalent to the
+
+00:01:04.331 --> 00:01:07.412
+NSA, if you're not aware, worrying about every hat that
+
+00:01:07.412 --> 00:01:10.658
+exists in cyber. Network architect, intelligence analysts,
+
+00:01:10.658 --> 00:01:13.959
+pin tester, defense analyst, solutions architect and senior
+
+00:01:13.959 --> 00:01:17.260
+security advisor. She's been on both sides of the keyboard.
+
+00:01:17.260 --> 00:01:20.341
+She's run national scale cyber exercises. And now she's
+
+00:01:20.341 --> 00:01:23.367
+translating that trade draft for the private sector at
+
+00:01:23.367 --> 00:01:26.228
+exactly the moment when the line between enterprise
+
+00:01:26.228 --> 00:01:29.529
+security and national security has effectively disappeared.
+
+00:01:29.529 --> 00:01:31.580
+Kimberly, welcome to PERSPECTIVES.
+
+00:01:31.580 --> 00:01:34.161
+Thanks Corey. It's really great to be here. Looking forward
+
+00:01:34.161 --> 00:01:35.560
+to the chatting.
+
+00:01:35.560 --> 00:01:38.745
+Alright, Kimberly, the joint Five Eyes advisory on Bolt
+
+00:01:38.745 --> 00:01:42.158
+Typhoon landed last year with a number that I think still a
+
+00:01:42.158 --> 00:01:45.457
+lot of boardrooms are trying to internalize at least five
+
+00:01:45.457 --> 00:01:48.813
+years of dwell time inside US critical infrastructure. And
+
+00:01:48.813 --> 00:01:51.601
+their goal wasn't really like espionage and that
+
+00:01:51.601 --> 00:01:54.843
+traditional sense. It was about pre positioning. Now you
+
+00:01:54.843 --> 00:01:58.142
+spent two decades inside the CSC watching this tradecraft
+
+00:01:58.142 --> 00:02:01.385
+evolve. And so when you look at how patient these actors
+
+00:02:01.385 --> 00:02:04.286
+have become, what's the thing that Cisos are still
+
+00:02:04.286 --> 00:02:05.520
+defending against?
+
+00:02:05.520 --> 00:02:07.970
+Maybe. What are they missing?
+
+00:02:07.970 --> 00:02:11.048
+Yeah, it's a it's a really interesting time that we're
+
+00:02:11.048 --> 00:02:14.294
+living in. Like you said, these actors are very strategic
+
+00:02:14.294 --> 00:02:17.540
+and they're very patient and they be, like you said, both
+
+00:02:17.540 --> 00:02:20.787
+Typhoon sat for at least five years that we know of. It's
+
+00:02:20.787 --> 00:02:24.033
+quite possibly longer than that. So I think a lot of this
+
+00:02:24.033 --> 00:02:26.999
+is a lot of security programs are still built in the
+
+00:02:26.999 --> 00:02:30.245
+traditional sense of defending the perimeter, looking for
+
+00:02:30.245 --> 00:02:33.604
+malware, looking for ransomware, looking for TTP's that hit
+
+00:02:33.604 --> 00:02:36.682
+known signatures. And that's not what these actors are
+
+00:02:36.682 --> 00:02:37.940
+doing, right.
+
+00:02:37.940 --> 00:02:41.064
+They're they're waiting us out, they're taking their time,
+
+00:02:41.064 --> 00:02:43.817
+they're hiding in plain sight. And I think a lot of
+
+00:02:43.817 --> 00:02:46.782
+scissors aren't really thinking that and looking at the
+
+00:02:46.782 --> 00:02:49.906
+behavior that they need to identify to find these types of
+
+00:02:49.906 --> 00:02:52.660
+actors. And the other thing that I find, I had this
+
+00:02:52.660 --> 00:02:55.625
+conversation a lot with different organizations. When I
+
+00:02:55.625 --> 00:02:58.802
+bring up the geopolitical aspect of what's happening in the
+
+00:02:58.802 --> 00:03:01.979
+world, a lot of Cisos and a lot of C-Suite executives asked
+
+00:03:01.979 --> 00:03:05.156
+me, well, why should I care? Why should I care about what's
+
+00:03:05.156 --> 00:03:07.990
+going on in the world right now that doesn't impact.
+
+00:03:07.990 --> 00:03:10.934
+Me, I'm living in Boston or I'm living in, you know, San
+
+00:03:10.934 --> 00:03:13.930
+Antonio. I'm living in Vancouver, wherever. Why is what's
+
+00:03:13.930 --> 00:03:17.570
+happening on the other side of the world impacting me?
+
+00:03:17.570 --> 00:03:20.551
+That geopolitical influence provides the context of why an
+
+00:03:20.551 --> 00:03:23.584
+organization might become a target when they weren't before,
+
+00:03:23.584 --> 00:03:26.414
+right? Without that context, you can't properly defend
+
+00:03:26.414 --> 00:03:29.345
+what's going on. It doesn't give you the why if you don't
+
+00:03:29.345 --> 00:03:32.075
+understand what's happening in the world. But I think
+
+00:03:32.075 --> 00:03:35.006
+people need to start taking advantage of that information
+
+00:03:35.006 --> 00:03:37.836
+and really weaving in the, you know, the complex threat
+
+00:03:37.836 --> 00:03:40.768
+intelligence that we have and building out their security
+
+00:03:40.768 --> 00:03:43.648
+programs to look at more than just the known actors, The
+
+00:03:43.648 --> 00:03:46.630
+known TTP's looking for things that aren't malware, right?
+
+00:03:46.630 --> 00:03:47.560
+These actors are.
+
+00:03:47.560 --> 00:03:50.837
+Using tools that live natively in most environments. And I
+
+00:03:50.837 --> 00:03:53.948
+don't where do programs have thought about that yet. So
+
+00:03:53.948 --> 00:03:57.171
+yeah. And I've heard some of the things you've written in
+
+00:03:57.171 --> 00:04:00.504
+the past, like you describe living off the land as like one
+
+00:04:00.504 --> 00:04:03.837
+of the dominant sort of tradecraft things that we're seeing
+
+00:04:03.837 --> 00:04:07.004
+now. So when when the attacker looks like identical to a
+
+00:04:07.004 --> 00:04:10.282
+legitimate admin, what is like what is detection even mean
+
+00:04:10.282 --> 00:04:13.448
+architecturally? Yeah, that's a whole other shift. And I
+
+00:04:13.448 --> 00:04:16.282
+think we need like you said, we need to change the
+
+00:04:16.282 --> 00:04:17.670
+architecture right The.
+
+00:04:17.670 --> 00:04:20.895
+Traditional types and forms of detection in the traditional
+
+00:04:20.895 --> 00:04:24.067
+signatures aren't going to pick up these types of behavior
+
+00:04:24.067 --> 00:04:27.239
+because they are so natural. How do you fingerprint assist
+
+00:04:27.239 --> 00:04:30.357
+admin, right? They have access to everything pretty much.
+
+00:04:30.357 --> 00:04:33.528
+How do you develop a detection that finds that when it's a
+
+00:04:33.528 --> 00:04:36.539
+normal activity for a system in on a Tuesday evening or
+
+00:04:36.539 --> 00:04:39.657
+something like that, right? And I think we need to really
+
+00:04:39.657 --> 00:04:42.775
+shift architecturally away from the traditional perimeter
+
+00:04:42.775 --> 00:04:45.570
+defense. Put the Shields up, put the, you know, the
+
+00:04:45.570 --> 00:04:48.490
+boundaries up and look at, you know, how is identity.
+
+00:04:48.490 --> 00:04:51.958
+Impacting everything. If we think about it, identity is the
+
+00:04:51.958 --> 00:04:53.460
+new endpoint.
+
+00:04:53.460 --> 00:04:56.404
+You know, these these types of accounts have access to
+
+00:04:56.404 --> 00:04:59.617
+everything and that's what the actors are going to be going
+
+00:04:59.617 --> 00:05:02.722
+after is things like that where it gives them an easy in.
+
+00:05:02.722 --> 00:05:05.881
+They don't need to to exploit really hard systems anymore.
+
+00:05:05.881 --> 00:05:09.040
+Yeah. I'm wondering if we're like, are we asking the wrong
+
+00:05:09.040 --> 00:05:12.039
+question? Because I mean, so often like the question is
+
+00:05:12.039 --> 00:05:15.037
+like, how do I keep them out versus how do we make like
+
+00:05:15.037 --> 00:05:17.982
+staying in unbearable for them? Yeah, I think that's a
+
+00:05:17.982 --> 00:05:20.927
+really good point. And I agree 100%. We are asking the
+
+00:05:20.927 --> 00:05:23.460
+wrong questions a lot of times. And I've been.
+
+00:05:23.460 --> 00:05:26.930
+Asked this a couple of times is how do we keep them out?
+
+00:05:26.930 --> 00:05:30.007
+And my response is assume they're already in, just like
+
+00:05:30.007 --> 00:05:33.138
+Volt Typhoon was there for five years, right? Assume the
+
+00:05:33.138 --> 00:05:36.051
+actors are already there. If you're not, then you're
+
+00:05:36.051 --> 00:05:39.128
+already behind the 8 ball. We're already trying to play
+
+00:05:39.128 --> 00:05:42.260
+catch up at that point. And we absolutely need to change
+
+00:05:42.260 --> 00:05:45.447
+the question of instead of a SISO building the perimeters
+
+00:05:45.447 --> 00:05:48.304
+and, and the security program and all of that. It's
+
+00:05:48.304 --> 00:05:51.546
+changing the question ask how can I make my environment so
+
+00:05:51.546 --> 00:05:54.788
+unbearable that the actors don't want to be there, make it
+
+00:05:54.788 --> 00:05:58.000
+as hard as possible for them to be there. And that's not.
+
+00:05:58.000 --> 00:06:01.246
+More firewalls, more tools, more signatures, more anything.
+
+00:06:01.246 --> 00:06:04.492
+That's your architecture from the ground up, and that's how
+
+00:06:04.492 --> 00:06:07.685
+you start to make it uncomfortable for them. When I was on
+
+00:06:07.685 --> 00:06:09.840
+the other side of the fence.
+
+00:06:09.840 --> 00:06:12.403
+Like most people were lazy, right? I'm not going to go
+
+00:06:12.403 --> 00:06:15.152
+after the hard, really hard targets. I'm going to go after
+
+00:06:15.152 --> 00:06:17.716
+the low hanging fruit and then minute way through. And
+
+00:06:17.716 --> 00:06:20.512
+that's the way most actors think as well. They're not going
+
+00:06:20.512 --> 00:06:23.308
+to waste their time. If you make it very expensive and time
+
+00:06:23.308 --> 00:06:26.104
+consuming for them to live inside your environment and hide
+
+00:06:26.104 --> 00:06:28.807
+for five years, they're not going to do it. They're going
+
+00:06:28.807 --> 00:06:31.604
+to move on to the next target. Alright, so in light of that,
+
+00:06:31.604 --> 00:06:34.400
+like we have to assume that the attacker is already inside
+
+00:06:34.400 --> 00:06:37.103
+or potentially like they may be like inside a vendor that
+
+00:06:37.103 --> 00:06:39.780
+you already have running in your environment. So like.
+
+00:06:39.780 --> 00:06:42.905
+Yeah, better conversation is essentially over. And so you,
+
+00:06:42.905 --> 00:06:46.030
+you've made this point pretty bluntly already so far. It's
+
+00:06:46.030 --> 00:06:48.838
+like traditional perimeter defenses are insufficient
+
+00:06:48.838 --> 00:06:51.698
+because the trust relations themselves are the attack
+
+00:06:51.698 --> 00:06:54.665
+surface. So if we accept that the real perimeter is the
+
+00:06:54.665 --> 00:06:57.843
+trust graph, what does this actually change about how a CSO
+
+00:06:57.843 --> 00:07:00.703
+should be architecting visibility and governance, not
+
+00:07:00.703 --> 00:07:03.882
+really in theory, but like more practically in an operating
+
+00:07:03.882 --> 00:07:04.870
+model.
+
+00:07:04.870 --> 00:07:07.784
+Yeah, it's definitely, you know, like you said, we've got
+
+00:07:07.784 --> 00:07:10.498
+to change how we think, right? The perimeter defenses
+
+00:07:10.498 --> 00:07:13.463
+aren't no longer enough and that does change the role of a
+
+00:07:13.463 --> 00:07:16.428
+SISO and what they're protecting, right? Like I said, it's
+
+00:07:16.428 --> 00:07:19.192
+no longer Shields up is your best defense anymore. You
+
+00:07:19.192 --> 00:07:22.006
+really have to think about the complete architecture of
+
+00:07:22.006 --> 00:07:25.570
+your environment and like I said, how you can make it.
+
+00:07:25.570 --> 00:07:28.916
+Unappealing for actors to leverage your environment to sit
+
+00:07:28.916 --> 00:07:32.320
+there for 5-6, seven years or however long they want and it
+
+00:07:32.320 --> 00:07:35.553
+is looking at you know your identity architecture, right
+
+00:07:35.553 --> 00:07:38.843
+Like I said all of those accounts those machine accounts,
+
+00:07:38.843 --> 00:07:42.133
+those machine tokens, they have access to a lot of things
+
+00:07:42.133 --> 00:07:45.479
+that we as humans may not have and sometimes not gonna lie
+
+00:07:45.479 --> 00:07:48.769
+you forget right you make an account for machine token or
+
+00:07:48.769 --> 00:07:52.059
+something like that and then somebody moves on and that's
+
+00:07:52.059 --> 00:07:55.236
+still there and that's a vector it right and I think we
+
+00:07:55.236 --> 00:07:55.760
+need to.
+
+00:07:55.760 --> 00:07:59.199
+We'll also change some of the metrics that we think about
+
+00:07:59.199 --> 00:08:02.578
+when it, when the system is talking to a board, right? A
+
+00:08:02.578 --> 00:08:05.899
+lot of times we talk time to detect, time to remediate,
+
+00:08:05.899 --> 00:08:09.160
+time to be resilient, right? Well, time to detect is a
+
+00:08:09.160 --> 00:08:12.540
+metric, but it needs to be changed to thinking along the
+
+00:08:12.540 --> 00:08:16.039
+lines of time to detect, but time to detect when our third
+
+00:08:16.039 --> 00:08:18.350
+party trusted relationship.
+
+00:08:18.350 --> 00:08:21.475
+How long does it take an actor to laterally move from that
+
+00:08:21.475 --> 00:08:24.548
+trusted relationship into our production environment? And
+
+00:08:24.548 --> 00:08:27.462
+how long does it take to detect that? Not just time to
+
+00:08:27.462 --> 00:08:30.482
+detect. And I think when Cisos have those conversations,
+
+00:08:30.482 --> 00:08:33.608
+that changes the environment. It changes the conversation,
+
+00:08:33.608 --> 00:08:36.575
+it changes the questions that are asked. And how do you
+
+00:08:36.575 --> 00:08:38.170
+architect that?
+
+00:08:38.170 --> 00:08:41.134
+If you're simply adding on more systems, more tools, you're
+
+00:08:41.134 --> 00:08:43.950
+not getting the full breadth of visibility to be able to
+
+00:08:43.950 --> 00:08:46.915
+detect those really sophisticated behavioral analytics. And
+
+00:08:46.915 --> 00:08:49.681
+it that's the conversation that Cisos need to have with
+
+00:08:49.681 --> 00:08:52.646
+their board is changing what questions they're being asked,
+
+00:08:52.646 --> 00:08:55.413
+right, And how they're answering them. Yeah. Behavioral
+
+00:08:55.413 --> 00:08:58.377
+analytics is one that you've talked about publicly a bunch.
+
+00:08:58.377 --> 00:09:01.341
+I mean, I know you talked about like this idea of like a 12
+
+00:09:01.341 --> 00:09:04.256
+month behavioral baseline, but in order to do that, you do
+
+00:09:04.256 --> 00:09:07.221
+have to have like a good bit of data, like you have to have
+
+00:09:07.221 --> 00:09:08.300
+a lot of telemetry.
+
+00:09:08.300 --> 00:09:11.510
+To even define like what normal looks like like what does
+
+00:09:11.510 --> 00:09:14.775
+that pattern So what does that conversation look like when
+
+00:09:14.775 --> 00:09:18.096
+you're you know you're talking to so trying to convince CFO
+
+00:09:18.096 --> 00:09:21.307
+that like, you know the CFO trying to keep down costs and
+
+00:09:21.307 --> 00:09:24.572
+trying to minimize how much data they're storing over time
+
+00:09:24.572 --> 00:09:27.838
+what does that conversation look like to like justify that
+
+00:09:27.838 --> 00:09:30.993
+data retention policy and that behavioral timeline shift
+
+00:09:30.993 --> 00:09:33.871
+yeah, it's an interesting 1 I had this very similar
+
+00:09:33.871 --> 00:09:37.136
+conversation over a decade ago when I was was that CSC and
+
+00:09:37.136 --> 00:09:38.480
+we were building a new.
+
+00:09:38.480 --> 00:09:41.707
+System and the developers asked me what data do you need
+
+00:09:41.707 --> 00:09:45.104
+and me being young and a little silly I said I want all the
+
+00:09:45.104 --> 00:09:48.332
+data. I quickly learned I did not want all the data that
+
+00:09:48.332 --> 00:09:51.446
+was a mistake. What I needed was the right data at the
+
+00:09:51.446 --> 00:09:54.447
+right time in the right context. So that changes the
+
+00:09:54.447 --> 00:09:57.222
+conversation. So I know Corey, you probably have
+
+00:09:57.222 --> 00:10:00.563
+conversations as well where you know CFO like data storage
+
+00:10:00.563 --> 00:10:03.960
+is expensive and yeah it is I get it. But if we're going to
+
+00:10:03.960 --> 00:10:07.188
+we're if we're going to go against these types of actors
+
+00:10:07.188 --> 00:10:09.410
+that are hiding for five 6-7 years.
+
+00:10:09.410 --> 00:10:12.977
+You have to think of data retention and behavioral analysis
+
+00:10:12.977 --> 00:10:16.486
+not in days, but in terms of like seasons, right? I saw an
+
+00:10:16.486 --> 00:10:19.875
+actor dwell. This was a while ago, less than five years,
+
+00:10:19.875 --> 00:10:23.384
+but not over nine months. Each individual activity was not
+
+00:10:23.384 --> 00:10:26.952
+malicious. We never would have found it. But when you piece
+
+00:10:26.952 --> 00:10:30.222
+it all together, then it's malicious. Then the picture
+
+00:10:30.222 --> 00:10:33.790
+starts to come a bit more clearly. The context is there. So
+
+00:10:33.790 --> 00:10:37.358
+it's like we go back, like the hot and cold storage, right?
+
+00:10:37.358 --> 00:10:39.510
+Not all data needs to be available.
+
+00:10:39.510 --> 00:10:42.163
+At all times, that's the whole architecture issue and
+
+00:10:42.163 --> 00:10:44.620
+figure out what data you need, where you need it,
+
+00:10:44.620 --> 00:10:47.569
+historical investigations. Your data doesn't need to be hot.
+
+00:10:47.569 --> 00:10:50.468
+You can leave it where it is and then go and look for it.
+
+00:10:50.468 --> 00:10:53.368
+But it's understanding that and having those conversations
+
+00:10:53.368 --> 00:10:56.267
+and really working through your architecture, your assets,
+
+00:10:56.267 --> 00:10:58.773
+your inventory, your data management strategy, and
+
+00:10:58.773 --> 00:11:01.722
+understanding all of that. It's a lot of groundwork. It's a
+
+00:11:01.722 --> 00:11:04.523
+lot of foundational work that I think most organizations
+
+00:11:04.523 --> 00:11:07.471
+wanted to still do the big shiny things, right? If you seen
+
+00:11:07.471 --> 00:11:10.223
+the movie Up or like, Oh Squirrel, then they're off and
+
+00:11:10.223 --> 00:11:11.160
+they're running.
+
+00:11:11.160 --> 00:11:14.152
+But the discipline is knowing what to ignore and having an
+
+00:11:14.152 --> 00:11:17.043
+understanding that's so you can focus on the things that
+
+00:11:17.043 --> 00:11:20.087
+make sense. Yeah. So if identity is like that, that lateral
+
+00:11:20.087 --> 00:11:23.130
+movement vector, behavioral baselines are, you know, how we
+
+00:11:23.130 --> 00:11:26.174
+actually can detect what those, you know, connect the dots,
+
+00:11:26.174 --> 00:11:28.811
+as you said, like what is actually malicious versus
+
+00:11:28.811 --> 00:11:31.753
+something that doesn't feel that way? Where have you seen
+
+00:11:31.753 --> 00:11:34.746
+that that mindset shift or like what what is it that maybe
+
+00:11:34.746 --> 00:11:37.536
+helps an organization really clicked when the catalyst
+
+00:11:37.536 --> 00:11:40.478
+moved them from like the traditional perimeter mindset to
+
+00:11:40.478 --> 00:11:41.360
+like this trust?
+
+00:11:41.360 --> 00:11:44.420
+Graph mindset that's powered by identity and behavioral
+
+00:11:44.420 --> 00:11:47.481
+analytics of data that does, you know, maybe go back in
+
+00:11:47.481 --> 00:11:50.650
+time a bit. Yeah. And I think it really comes down to the
+
+00:11:50.650 --> 00:11:53.875
+conversations you're having between your security program,
+
+00:11:53.875 --> 00:11:57.045
+your security managers, directors or so on the board. And
+
+00:11:57.045 --> 00:12:00.105
+like I said, having that instead of going in and saying
+
+00:12:00.105 --> 00:12:03.111
+we've driven down our time to detect to 3 minutes. OK,
+
+00:12:03.111 --> 00:12:06.336
+Detect what? Right. So when I come at this, I think about,
+
+00:12:06.336 --> 00:12:09.615
+you know, one of my former managers at the agency, he would
+
+00:12:09.615 --> 00:12:12.180
+always say, So what you've done it, So what?
+
+00:12:12.180 --> 00:12:15.230
+So we're driving down time to detect. That's great for
+
+00:12:15.230 --> 00:12:18.557
+traditional attacks, right, somewhere, malware, things like
+
+00:12:18.557 --> 00:12:21.607
+that. But changing that conversation to time to detect
+
+00:12:21.607 --> 00:12:24.934
+lateral movement from a third party trusted vendor into our
+
+00:12:24.934 --> 00:12:28.150
+production environment. If you go in and say we've driven
+
+00:12:28.150 --> 00:12:31.367
+down that time to detect from 4 hours to 35 minutes, that
+
+00:12:31.367 --> 00:12:34.528
+completely changes the conversation. And I don't think a
+
+00:12:34.528 --> 00:12:37.855
+lot of security leaders are having that conversation. We're
+
+00:12:37.855 --> 00:12:40.905
+still very stuck in, you know, going back 10 years, 15
+
+00:12:40.905 --> 00:12:42.190
+years time to detect.
+
+00:12:42.190 --> 00:12:45.275
+Intermediate right time recovery, those are still important,
+
+00:12:45.275 --> 00:12:48.413
+but the board is gonna care about things like we've stopped
+
+00:12:48.413 --> 00:12:51.344
+that lateral movement and we can be operational again in
+
+00:12:51.344 --> 00:12:54.430
+three hours or we can be operational again in one hour. And
+
+00:12:54.430 --> 00:12:57.362
+those are the conversations that are going to change the
+
+00:12:57.362 --> 00:13:00.397
+minds of the people that are funding all of these security
+
+00:13:00.397 --> 00:13:02.050
+programs.
+
+00:13:02.050 --> 00:13:04.654
+So there's a bunch of seasons are going to walk into
+
+00:13:04.654 --> 00:13:07.602
+boardrooms in the next few weeks and they're gonna be like,
+
+00:13:07.602 --> 00:13:10.550
+ohh, you know, we we passed Sock too. We got those controls
+
+00:13:10.550 --> 00:13:13.203
+in place. ISO certifications are maintained, pin test
+
+00:13:13.203 --> 00:13:16.102
+scores, all good. But you argue that that's the floor, not
+
+00:13:16.102 --> 00:13:18.755
+the ceiling. And it doesn't tell the board, you know,
+
+00:13:18.755 --> 00:13:21.359
+anything about whether the organization can actually
+
+00:13:21.359 --> 00:13:24.062
+survive a patient adversary. And you've got experience
+
+00:13:24.062 --> 00:13:26.616
+doing this at a national scale, which is, you know,
+
+00:13:26.616 --> 00:13:29.515
+essentially this like geopolitical resilience as a contact
+
+00:13:29.515 --> 00:13:32.230
+sport. So if a seesaw walks out of this conversation.
+
+00:13:32.230 --> 00:13:34.937
+And they've got 15 minutes with their board next week.
+
+00:13:34.937 --> 00:13:37.792
+What's the like one shift in metrics or tabletop scenario
+
+00:13:37.792 --> 00:13:40.451
+that you would say like this changes the conversation
+
+00:13:40.451 --> 00:13:43.257
+completely? Yeah, I think I'll stay away from that works
+
+00:13:43.257 --> 00:13:46.063
+because we've touched on that quite a bit and there's so
+
+00:13:46.063 --> 00:13:48.918
+many, right? And I love and hate the metrics conversation
+
+00:13:48.918 --> 00:13:51.773
+because I think it's different for every organization and
+
+00:13:51.773 --> 00:13:54.727
+every industry, right? What's important to one organization
+
+00:13:54.727 --> 00:13:57.484
+may not, you know, the next one may not care about that
+
+00:13:57.484 --> 00:14:00.437
+metric, right? So I feel like those are a bit of individual,
+
+00:14:00.437 --> 00:14:02.280
+but in terms of tabletop exercises.
+
+00:14:02.280 --> 00:14:05.957
+Like participated in quite a few over the last year up here
+
+00:14:05.957 --> 00:14:07.920
+in Canada.
+
+00:14:07.920 --> 00:14:10.783
+The biggest shift I find, or the biggest shift that's going
+
+00:14:10.783 --> 00:14:13.646
+to make, the biggest change is moving from a single type of
+
+00:14:13.646 --> 00:14:16.318
+incident for a tabletop exercise. So the ones that I've
+
+00:14:16.318 --> 00:14:18.895
+seen, a lot of the ones that I've heard companies do,
+
+00:14:18.895 --> 00:14:21.424
+organizations do, is like, oh, we're responding to a
+
+00:14:21.424 --> 00:14:24.460
+ransomware attack and then they work through that.
+
+00:14:24.460 --> 00:14:27.784
+Well, we've been there, done that, right? We really need to
+
+00:14:27.784 --> 00:14:30.666
+change those types of tabletop exercises to be more
+
+00:14:30.666 --> 00:14:33.825
+encompassing of what is actually happening in the world,
+
+00:14:33.825 --> 00:14:36.928
+right? So think of it in terms, I'm gonna do a tabletop
+
+00:14:36.928 --> 00:14:40.253
+exercise where our third party vendor has been compromised.
+
+00:14:40.253 --> 00:14:43.412
+We're also being impacted by a geopolitical event that's
+
+00:14:43.412 --> 00:14:47.150
+happening in the world that's affecting something else.
+
+00:14:47.150 --> 00:14:50.154
+How do you respond to all of that? It has to cut across the
+
+00:14:50.154 --> 00:14:53.159
+entire organization. I've seen companies come to a complete
+
+00:14:53.159 --> 00:14:56.064
+standstill when it comes to these types of events because
+
+00:14:56.064 --> 00:14:59.069
+they haven't thought about ohh, wait. We need our, you know,
+
+00:14:59.069 --> 00:15:01.774
+our public relations people in the room. We need our
+
+00:15:01.774 --> 00:15:04.578
+lawyers in the room. We need our security people in the
+
+00:15:04.578 --> 00:15:07.583
+room. We need our network people in the room. All of the IT
+
+00:15:07.583 --> 00:15:10.538
+needs to cut across the entire breadth of the organization
+
+00:15:10.538 --> 00:15:13.393
+and it needs to become automatic. There's I've been in a
+
+00:15:13.393 --> 00:15:16.348
+lot of OPS when I was in the government and there was this
+
+00:15:16.348 --> 00:15:17.620
+whole myth of, you know.
+
+00:15:17.620 --> 00:15:20.477
+War room comes together, it's instantaneous. Everybody
+
+00:15:20.477 --> 00:15:23.385
+knows exactly what they're doing. That's not true. It's
+
+00:15:23.385 --> 00:15:26.346
+complete course, right. Yeah. So, so I'm curious though,
+
+00:15:26.346 --> 00:15:29.307
+like in those, I wanna, I wanna plug into that because I
+
+00:15:29.307 --> 00:15:32.216
+like that comment, which is like these are like intense
+
+00:15:32.216 --> 00:15:35.333
+exercises that teams have to run. And I'm curious like when
+
+00:15:35.333 --> 00:15:38.242
+you, when you run those, when you're talking with folks
+
+00:15:38.242 --> 00:15:41.255
+that have run these in the way that you're talking about,
+
+00:15:41.255 --> 00:15:44.164
+what's the, what's the failure mode where you see those
+
+00:15:44.164 --> 00:15:47.021
+like breakdown, is it like, is it technology? Is it an
+
+00:15:47.021 --> 00:15:48.390
+operating model or is it.
+
+00:15:48.390 --> 00:15:51.378
+Like the muscle memory of a team that's under massive
+
+00:15:51.378 --> 00:15:54.532
+stress. Like, what does that failure mode you see? Yeah,
+
+00:15:54.532 --> 00:15:57.742
+some people may not like my answer to this, but I'm going
+
+00:15:57.742 --> 00:16:00.841
+to go with it anyway because I've been through a lot of
+
+00:16:00.841 --> 00:16:03.608
+tabletop exercises, a lot of simulations, and the
+
+00:16:03.608 --> 00:16:06.431
+technology rarely fails, right? You know, the same
+
+00:16:06.431 --> 00:16:09.640
+identifies the EDR, contains the sore automates. They all
+
+00:16:09.640 --> 00:16:12.961
+do what you've told them to do, what you programmed them to
+
+00:16:12.961 --> 00:16:16.005
+do. What I find the failure and most parts is decision
+
+00:16:16.005 --> 00:16:18.510
+paralysis. There's so many things happening.
+
+00:16:18.510 --> 00:16:22.360
+At the exact same time, like I said, that war room that you
+
+00:16:22.360 --> 00:16:26.210
+see in movies and TV where everybody's operating perfectly,
+
+00:16:26.210 --> 00:16:30.061
+I've never seen it in person ever. It's complete chaos. And
+
+00:16:30.061 --> 00:16:33.911
+the thing that's the decision paralysis. Not every event or
+
+00:16:33.911 --> 00:16:37.633
+disruption in your organization and your network and your
+
+00:16:37.633 --> 00:16:41.420
+servers or whatever, It's not always malicious, right? And
+
+00:16:41.420 --> 00:16:44.821
+I find there's so much time taken to identify what's
+
+00:16:44.821 --> 00:16:48.920
+actually happening before anyone will do anything.
+
+00:16:48.920 --> 00:16:51.364
+And that's not always the right response. There's things
+
+00:16:51.364 --> 00:16:53.680
+that need to happen, and that's just practice. That's
+
+00:16:53.680 --> 00:16:56.253
+running it every single day. That's, you know, calling that
+
+00:16:56.253 --> 00:16:58.740
+war room and trying to make sure you get the right people
+
+00:16:58.740 --> 00:17:01.013
+in the room at the right time that can address those
+
+00:17:01.013 --> 00:17:03.180
+questions and make a decision.
+
+00:17:03.180 --> 00:17:06.183
+Whether it's right or wrong, a decision has to be made
+
+00:17:06.183 --> 00:17:09.404
+right. Like people make mistakes, but I've it's rarely the
+
+00:17:09.404 --> 00:17:12.626
+technology that fails. Yeah, well, give really that landed
+
+00:17:12.626 --> 00:17:15.629
+exactly where I wanted it to the piece I really wanted
+
+00:17:15.629 --> 00:17:18.906
+everybody to like sit with. Is this that like there is this
+
+00:17:18.906 --> 00:17:21.800
+operating model gap when the reality is that our our
+
+00:17:21.800 --> 00:17:24.912
+adversaries have been running this five year clock for a
+
+00:17:24.912 --> 00:17:28.025
+while now and our governance cadence and their worms are
+
+00:17:28.025 --> 00:17:31.246
+kind of like quarterly. And that's as you said, it's, it's
+
+00:17:31.246 --> 00:17:34.330
+not really a a technology problem so much as it's like.
+
+00:17:34.330 --> 00:17:37.476
+It's a playbook and an architectural and an operating model
+
+00:17:37.476 --> 00:17:40.622
+problem. And you know, the good thing is like this playbook
+
+00:17:40.622 --> 00:17:43.611
+isn't a mystery. Long term retention of data, behavioral
+
+00:17:43.611 --> 00:17:46.337
+baselines, as you said, identity as a parameter and
+
+00:17:46.337 --> 00:17:49.326
+exercises that actually stress the systems, the way your
+
+00:17:49.326 --> 00:17:52.368
+adversaries actually are going to work in real life is so
+
+00:17:52.368 --> 00:17:54.280
+critical.
+
+00:17:54.280 --> 00:17:57.698
+You said it perfectly, another another saying that we had
+
+00:17:57.698 --> 00:18:00.940
+when we were doing OPS and doing counterterrorism, the
+
+00:18:00.940 --> 00:18:02.850
+target gets a veto.
+
+00:18:02.850 --> 00:18:05.673
+We never had the luxury of, you know, we had executives
+
+00:18:05.673 --> 00:18:08.648
+telling us we needed to understand the latest and greatest
+
+00:18:08.648 --> 00:18:11.572
+technology that was out there. And we needed to be on top
+
+00:18:11.572 --> 00:18:14.395
+of we need to be able to reverse engineer. We needed to
+
+00:18:14.395 --> 00:18:17.421
+have in-depth understanding. And those of us actually doing
+
+00:18:17.421 --> 00:18:20.395
+the work, we put up our hands and say, well, you know, our
+
+00:18:20.395 --> 00:18:23.970
+targets are running around a desert with Nokia phones, so.
+
+00:18:23.970 --> 00:18:26.712
+I don't, we don't have the lunch like we have to meet them
+
+00:18:26.712 --> 00:18:29.362
+where they are. And the same thing holds through through
+
+00:18:29.362 --> 00:18:31.966
+for this. If you're running a tabletop exercise to find
+
+00:18:31.966 --> 00:18:34.755
+ransomware, that's not what the attackers are doing anymore.
+
+00:18:34.755 --> 00:18:37.498
+You have to change. You have to meet them where they are.
+
+00:18:37.498 --> 00:18:40.195
+You have to understand what they're doing and why they're
+
+00:18:40.195 --> 00:18:42.891
+doing it and then work on your tabletop exercises to meet
+
+00:18:42.891 --> 00:18:45.402
+them there. So that's how people are going to respond
+
+00:18:45.402 --> 00:18:46.860
+efficiently.
+
+00:18:46.860 --> 00:18:49.777
+I love it. Well, Kim, thanks so much for being generous
+
+00:18:49.777 --> 00:18:52.643
+with your time and sharing your tradecraft with us. To
+
+00:18:52.643 --> 00:18:55.456
+everyone watching, if this conversation made you like
+
+00:18:55.456 --> 00:18:58.426
+rethink something, it, it brought something to mind that
+
+00:18:58.426 --> 00:19:01.552
+you want to dig into, you know, share this with a peer. And,
+
+00:19:01.552 --> 00:19:04.105
+and I also encourage you to head over to splunk.
+
+00:19:04.105 --> 00:19:07.075
+com/perspectives to sign up for our newsletter so you'll
+
+00:19:07.075 --> 00:19:09.993
+stay abreast of all the latest conversations that we're
+
+00:19:09.993 --> 00:19:13.014
+having just like this one today. And as always, thank you
+
+00:19:13.014 --> 00:19:16.036
+for joining Perspectives by Splunk. And as I like to tell
+
+00:19:16.036 --> 00:19:16.770
+my friends.
+
+00:19:16.770 --> 00:19:19.940
+Splunky, my friends.

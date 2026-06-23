@@ -1,0 +1,6 @@
+2026/06/22-18:00:48.295 59bc Reusing MANIFEST C:\Users\ARGO\Documents\Python\AgentLinkedin\edge_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/06/22-18:00:48.403 59bc Recovering log #65
+2026/06/22-18:00:48.428 59bc Reusing old log C:\Users\ARGO\Documents\Python\AgentLinkedin\edge_profile\Default\EdgeCoupons/coupons_data.db/000065.log 
+2026/06/22-18:00:51.387 33a8 Level-0 table #69: started
+2026/06/22-18:00:51.394 33a8 Level-0 table #69: 682852 bytes OK
+2026/06/22-18:00:51.395 33a8 Delete type=0 #65

@@ -1,0 +1,48 @@
+scheduler:
+  timezone: 'America/Mexico_City'
+  posts_per_day: 4
+
+topics:
+  ia:
+    feeds:
+      - https://techcrunch.com/feed/
+      - https://www.wired.com/feed/rss
+    hashtags: ['#IA', '#InteligenciaArtificial', '#MachineLearning']
+
+  tecnologia:
+    feeds:
+      - https://feeds.arstechnica.com/arstechnica/index
+      - https://www.technologyreview.com/feed/
+    hashtags: ['#Tecnología', '#Innovación', '#Tech']
+
+  programacion:
+    feeds:
+      - https://dev.to/feed
+      - https://hnrss.org/frontpage
+    hashtags: ['#Programación', '#Coding', '#Developer']
+
+  videojuegos:
+    feeds:
+      - https://kotaku.com/rss
+      - https://www.eurogamer.net/feed
+    hashtags: ['#Videojuegos', '#Gaming', '#Gamer']
+
+  peliculas:
+    feeds:
+      - https://screenrant.com/feed/
+      - https://movieweb.com/feed/
+    hashtags: ['#Cine', '#Películas', '#Acción']
+
+image:
+  width: 1080
+  height: 1080
+  background_color: '#1a1a2e'
+
+memes:
+  subreddits:
+    - 'ProgrammerHumor'
+    - 'dankmemes'
+    - 'techmemes'
+    - 'gamingmemes'
+  limit: 10
+  min_score: 1000

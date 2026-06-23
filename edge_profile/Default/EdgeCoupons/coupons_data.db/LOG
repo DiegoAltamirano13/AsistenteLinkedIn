@@ -1,0 +1,15 @@
+2026/06/22-18:05:15.942 1e08 Reusing MANIFEST C:\Users\ARGO\Documents\Python\AgentLinkedin\edge_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/06/22-18:05:15.944 1e08 Recovering log #68
+2026/06/22-18:05:15.945 1e08 Reusing old log C:\Users\ARGO\Documents\Python\AgentLinkedin\edge_profile\Default\EdgeCoupons/coupons_data.db/000068.log 
+2026/06/22-18:05:19.342 6c24 Level-0 table #72: started
+2026/06/22-18:05:19.346 6c24 Level-0 table #72: 682852 bytes OK
+2026/06/22-18:05:19.347 6c24 Delete type=0 #68
+2026/06/22-18:05:19.348 4ba8 Compacting 4@0 + 1@1 files
+2026/06/22-18:05:19.352 4ba8 Generated table #73@0: 4 keys, 682759 bytes
+2026/06/22-18:05:19.352 4ba8 Compacted 4@0 + 1@1 files => 682759 bytes
+2026/06/22-18:05:19.352 4ba8 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/06/22-18:05:19.353 4ba8 Delete type=2 #60
+2026/06/22-18:05:19.353 4ba8 Delete type=2 #63
+2026/06/22-18:05:19.353 4ba8 Delete type=2 #66
+2026/06/22-18:05:19.353 4ba8 Delete type=2 #69
+2026/06/22-18:05:19.353 4ba8 Delete type=2 #72
