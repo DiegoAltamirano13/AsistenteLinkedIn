@@ -7,7 +7,6 @@ from googleapiclient.discovery import build
 
 class CalendarFetcher:
     SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-
     def __init__(self, creds_file='credentials.json', token_file='token.pickle'):
         self.creds_file = creds_file
         self.token_file = token_file

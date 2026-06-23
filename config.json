@@ -1,21 +1,54 @@
 {
-  "api_key": "sk_f933bb3bbd36154c06b6604f394b86aa20e28831d9fcf6cdb4c7c6ed223f4c38",
+  "api_key": "sk_50fb394b2fa16ad621793641241362e76c37314731888b4bf529b20a05a749d8",
   "profile_id": "6a3aab11ef4517c2bbde032a",
   "platform_id": "facebook",
   "account_id": "6a3aabbe5f7d1751ab626bfd",
   "account_name": "arcuos1113",
-  "rss_feeds": [
+  "idioma": "es",
+  "rss_feeds": [],
+  "rss_feeds_es": [
+    "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
+    "https://www.bbc.com/mundo/index.xml",
+    "https://actualidad.rt.com/rss"
+  ],
+  "rss_feeds_en": [
     "https://feeds.feedburner.com/TechCrunch",
     "https://feeds.feedburner.com/wired/",
     "https://feeds.arstechnica.com/arstechnica/index"
   ],
-  "subreddits": [
+  "subreddits": [],
+  "subreddits_es": [
+    "memexico",
+    "spanishmemes",
+    "Mujico"
+  ],
+  "subreddits_en": [
     "ProgrammerHumor",
     "dankmemes",
     "techmemes",
     "gamingmemes"
   ],
-  "reddit_client_id": "",
-  "reddit_secret": "",
-  "interval_hours": 1
+  "interval_hours": 1,
+  "language": "es",
+  "custom_rss_feeds": [],
+  "custom_subreddits": [],
+  "themes": [
+    "tecnologia",
+    "ciencia",
+    "deportes",
+    "videojuegos"
+  ],
+  "active_themes": [
+    "tecnologia"
+  ],
+  "active_rss_feeds": [
+    "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/tecnologia",
+    "https://www.bbc.com/mundo/ciencia_y_tecnologia/index.xml",
+    "https://www.elmundo.es/rss/tecnologia.xml"
+  ],
+  "active_subreddits": [
+    "memexico",
+    "spanishmemes",
+    "Mujico"
+  ]
 }

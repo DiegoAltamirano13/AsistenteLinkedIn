@@ -8,52 +8,329 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <style>
+      .preview-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 12px;
+        min-height: 60px;
+        color: #e2e8f0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .preview-box .empty {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .char-counter {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        text-align: right;
+        margin-top: 4px;
+      }
+      .format-toolbar {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .format-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        color: #e2e8f0;
+        padding: 4px 10px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .format-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .platform-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        background: rgba(108, 60, 225, 0.2);
+        color: #a78bfa;
+        margin-bottom: 12px;
+      }
+      .platform-badge i {
+        margin-right: 6px;
+      }
+    </style>
   </head>
   <body>
     <div class="container py-4">
-      <h2>✏️ Publicar contenido manual</h2>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+          <i class="fas fa-pen-fancy me-2" style="color: #6c3ce1"></i>
+          Publicar contenido
+        </h2>
+        <a href="/" class="btn-outline-glass">
+          <i class="fas fa-arrow-left"></i>
+          Volver
+        </a>
+      </div>
+
+      <!-- Información de la cuenta seleccionada -->
+      <div id="accountInfo" class="mb-3">
+        <span class="platform-badge" id="platformBadge">
+          <i class="fas fa-plug"></i>
+          <span id="platformName">Cargando...</span>
+        </span>
+        <span class="platform-badge" style="background: rgba(52, 211, 153, 0.15); color: #34d399">
+          <i class="fas fa-user"></i>
+          <span id="accountName">-</span>
+        </span>
+      </div>
+
       <div class="card">
         <div class="card-body">
+          <!-- Área de texto principal -->
           <div class="mb-3">
-            <label class="form-label">Texto</label>
+            <label class="form-label">Contenido</label>
             <textarea
               class="form-control"
               id="publishText"
-              rows="4"
-              placeholder="Escribe tu mensaje"
+              rows="5"
+              placeholder="Escribe tu mensaje aquí..."
             ></textarea>
+            <div class="char-counter">
+              <span id="charCount">0</span>
+              caracteres
+            </div>
           </div>
+
+          <!-- Previsualización -->
           <div class="mb-3">
-            <label class="form-label">O generar con IA</label>
+            <label class="form-label">Vista previa (texto plano)</label>
+            <div id="previewBox" class="preview-box">
+              <span class="empty">El contenido aparecerá aquí</span>
+            </div>
+          </div>
+
+          <!-- Barra de herramientas de formato (condicional) -->
+          <div id="formatToolbar" class="format-toolbar" style="display: none">
+            <button class="format-btn" onclick="wrapText('**', '**')">
+              <b>N</b>
+              Negrita
+            </button>
+            <button class="format-btn" onclick="wrapText('*', '*')">
+              <i>I</i>
+              Cursiva
+            </button>
+            <button class="format-btn" onclick="insertLink()">
+              <i class="fas fa-link"></i>
+              Enlace
+            </button>
+            <button class="format-btn" onclick="insertEmoji()">
+              <i class="far fa-smile"></i>
+              Emoji
+            </button>
+            <button class="format-btn" onclick="clearFormatting()">
+              <i class="fas fa-undo-alt"></i>
+              Limpiar formato
+            </button>
+          </div>
+
+          <!-- Generación de contenido -->
+          <div class="mb-3">
+            <label class="form-label">Generar con IA</label>
             <div class="input-group">
-              <input type="text" class="form-control" id="aiPrompt" placeholder="Prompt para IA" />
+              <input
+                type="text"
+                class="form-control"
+                id="aiPrompt"
+                placeholder="Prompt para IA (ej. 'Dame un tweet sobre tecnología')"
+              />
               <button class="btn btn-outline-secondary" onclick="generateText()">
                 Generar texto
               </button>
             </div>
           </div>
+
+          <!-- Botones de carga de contenido -->
           <div class="mb-3">
-            <button class="btn btn-outline-primary" onclick="fetchNews()">📰 Cargar noticia</button>
-            <button class="btn btn-outline-primary" onclick="fetchMeme()">🖼️ Cargar meme</button>
-            <button class="btn btn-outline-primary" onclick="fetchEvent()">📅 Cargar evento</button>
+            <button class="btn btn-outline-primary" onclick="fetchNews()">
+              <i class="fas fa-newspaper"></i>
+              Noticia
+            </button>
+            <button class="btn btn-outline-primary" onclick="fetchMeme()">
+              <i class="fas fa-image"></i>
+              Meme
+            </button>
+            <button class="btn btn-outline-primary" onclick="fetchEvent()">
+              <i class="fas fa-calendar-alt"></i>
+              Evento
+            </button>
+            <button class="btn btn-outline-primary" onclick="clearContent()">
+              <i class="fas fa-trash-alt"></i>
+              Limpiar
+            </button>
           </div>
+
+          <!-- Imagen -->
           <div class="mb-3">
             <label class="form-label">Imagen (opcional)</label>
             <input type="file" class="form-control" id="imageFile" accept="image/*" />
             <button class="btn btn-outline-secondary mt-2" onclick="generateImage()">
-              🎨 Generar imagen por IA
+              <i class="fas fa-paint-brush"></i>
+              Generar imagen por IA
             </button>
             <div id="imagePreview" class="mt-2"></div>
           </div>
-          <button class="btn btn-success" onclick="doPublish()">📤 Publicar</button>
-          <a href="/" class="btn btn-secondary">Volver</a>
+
+          <!-- Botón publicar -->
+          <button class="btn btn-success" onclick="doPublish()">
+            <i class="fas fa-paper-plane"></i>
+            Publicar
+          </button>
+
+          <!-- Resultado -->
           <div id="publishResult" class="mt-3"></div>
         </div>
       </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+      // ============================================================
+      // CONFIGURACIÓN Y ESTADO
+      // ============================================================
+      let currentConfig = {};
+      let selectedPlatform = 'facebook';
+      let supportsHtml = false; // Por defecto, no
+
+      // ============================================================
+      // CARGAR CONFIGURACIÓN DE LA CUENTA
+      // ============================================================
+      function loadAccountInfo() {
+        $.get('/api/config', function (data) {
+          currentConfig = data;
+          const platform = data.platform_id || 'facebook';
+          const account = data.account_name || 'No seleccionada';
+          selectedPlatform = platform;
+          // Determinar si la plataforma soporta HTML (más o menos)
+          const htmlPlatforms = ['facebook', 'linkedin', 'instagram', 'threads'];
+          supportsHtml = htmlPlatforms.includes(platform);
+          if (supportsHtml) {
+            $('#formatToolbar').show();
+          } else {
+            $('#formatToolbar').hide();
+          }
+          // Mostrar información
+          $('#platformName').text(platform.charAt(0).toUpperCase() + platform.slice(1));
+          $('#accountName').text(account);
+          // Actualizar badge de cuenta
+          if (account !== 'No seleccionada') {
+            $('#accountInfo .platform-badge:last')
+              .css('background', 'rgba(52,211,153,0.15)')
+              .css('color', '#34d399');
+          } else {
+            $('#accountInfo .platform-badge:last')
+              .css('background', 'rgba(248,113,113,0.15)')
+              .css('color', '#f87171');
+          }
+        }).fail(function () {
+          $('#platformName').text('Error al cargar');
+          $('#accountName').text('Error');
+        });
+      }
+
+      // ============================================================
+      // PREVISUALIZACIÓN Y CONTADOR
+      // ============================================================
+      function updatePreview() {
+        const text = $('#publishText').val();
+        const preview = $('#previewBox');
+        // Eliminar etiquetas HTML para la previsualización (texto plano)
+        const plainText = text.replace(/<[^>]*>/g, '');
+        if (plainText.trim() === '') {
+          preview.html('<span class="empty">El contenido aparecerá aquí</span>');
+        } else {
+          preview.text(plainText);
+        }
+        // Contador de caracteres (sin HTML)
+        const charCount = plainText.length;
+        $('#charCount').text(charCount);
+      }
+
+      // ============================================================
+      // FORMATO DE TEXTO (solo si soporta HTML)
+      // ============================================================
+      function wrapText(before, after) {
+        const textarea = document.getElementById('publishText');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selected = textarea.value.substring(start, end);
+        const replacement = before + selected + after;
+        textarea.value =
+          textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+        textarea.focus();
+        textarea.selectionStart = start + before.length;
+        textarea.selectionEnd = start + before.length + selected.length;
+        updatePreview();
+      }
+
+      function insertLink() {
+        const url = prompt('Introduce la URL del enlace:', 'https://');
+        if (url) {
+          const textarea = document.getElementById('publishText');
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          const selected = textarea.value.substring(start, end) || 'enlace';
+          const replacement = `<a href="${url}" target="_blank">${selected}</a>`;
+          textarea.value =
+            textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+          updatePreview();
+        }
+      }
+
+      function insertEmoji() {
+        const emojis = [
+          '😊',
+          '😂',
+          '❤️',
+          '🔥',
+          '👀',
+          '✨',
+          '💪',
+          '🎉',
+          '🤖',
+          '📢',
+          '🚀',
+          '💡',
+          '📱',
+          '🌐',
+          '🔗',
+        ];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        const textarea = document.getElementById('publishText');
+        const start = textarea.selectionStart;
+        textarea.value =
+          textarea.value.substring(0, start) + randomEmoji + textarea.value.substring(start);
+        updatePreview();
+      }
+
+      function clearFormatting() {
+        const text = $('#publishText').val();
+        // Eliminar etiquetas HTML y convertir a texto plano
+        const plainText = text.replace(/<[^>]*>/g, '');
+        $('#publishText').val(plainText);
+        updatePreview();
+      }
+
+      // ============================================================
+      // GENERACIÓN DE CONTENIDO
+      // ============================================================
       function generateText() {
         const prompt = $('#aiPrompt').val();
         if (!prompt) return alert('Escribe un prompt');
@@ -65,9 +342,13 @@
           success: function (data) {
             if (data.text) {
               $('#publishText').val(data.text);
+              updatePreview();
             } else {
               alert('Error: ' + data.error);
             }
+          },
+          error: function (xhr) {
+            alert('Error al generar texto: ' + xhr.responseJSON?.error || 'desconocido');
           },
         });
       }
@@ -83,84 +364,130 @@
           success: function (data) {
             if (data.image_path) {
               $('#imagePreview').html(
-                `<img src="/${data.image_path}" class="preview-image" style="max-width:100%;max-height:300px;">`,
+                `<img src="/${data.image_path}" class="preview-image" style="max-width:100%;max-height:300px;border-radius:8px;">`,
               );
             } else {
               alert('Error: ' + data.error);
             }
           },
+          error: function (xhr) {
+            alert('Error al generar imagen: ' + xhr.responseJSON?.error || 'desconocido');
+          },
         });
       }
 
+      // ============================================================
+      // CARGAR CONTENIDO EXTERNO
+      // ============================================================
       function fetchNews() {
         $.get('/api/news', function (data) {
-          if (data.error) {
-            alert('Error: ' + data.error);
-            return;
-          }
+          if (data.error) return alert('Error: ' + data.error);
           if (data.length > 0) {
             const item = data[0];
-            $('#publishText').val(
-              `${item.title}\n${item.summary}\nFuente: ${item.source}\n${item.link}`,
-            );
+            // Limpiar posibles etiquetas HTML del resumen
+            const summary = item.summary ? item.summary.replace(/<[^>]*>/g, '') : '';
+            const text = `${item.title}\n${summary}\nFuente: ${item.source}\n${item.link}`;
+            $('#publishText').val(text);
+            updatePreview();
           } else {
             alert('No se encontraron noticias');
           }
+        }).fail(function () {
+          alert('Error al cargar noticias');
         });
       }
 
       function fetchMeme() {
         $.get('/api/meme', function (data) {
-          if (data.error) {
-            alert('Error: ' + data.error);
-            return;
-          }
+          if (data.error) return alert('Error: ' + data.error);
           if (data.meme_path) {
             $('#imagePreview').html(
-              `<img src="/${data.meme_path}" class="preview-image" style="max-width:100%;max-height:300px;">`,
+              `<img src="/${data.meme_path}" class="preview-image" style="max-width:100%;max-height:300px;border-radius:8px;">`,
             );
             $('#publishText').val('¡Meme del día! 😂');
+            updatePreview();
+          } else {
+            alert('No se pudo obtener meme');
           }
+        }).fail(function () {
+          alert('Error al cargar meme');
         });
       }
 
       function fetchEvent() {
         $.get('/api/events', function (data) {
-          if (data.error) {
-            alert('Error: ' + data.error);
-            return;
-          }
+          if (data.error) return alert('Error: ' + data.error);
           if (data.length > 0) {
             const ev = data[0];
-            $('#publishText').val(`📅 ${ev.summary}\n📆 ${ev.start}\n🔗 ${ev.link}`);
+            const text = `📅 ${ev.summary}\n📆 ${ev.start}\n🔗 ${ev.link}`;
+            $('#publishText').val(text);
+            updatePreview();
           } else {
             alert('No hay eventos próximos');
           }
+        }).fail(function () {
+          alert('Error al cargar eventos');
         });
       }
 
+      function clearContent() {
+        $('#publishText').val('');
+        $('#imagePreview').html('');
+        updatePreview();
+      }
+
+      // ============================================================
+      // PUBLICAR
+      // ============================================================
       function doPublish() {
-        const text = $('#publishText').val();
-        if (!text) return alert('Escribe un texto');
-        // Aquí se podría subir imagen, pero por simplicidad solo texto
+        let text = $('#publishText').val();
+        if (!text.trim()) return alert('Escribe un texto para publicar');
+
+        // Si la plataforma NO soporta HTML, eliminar etiquetas HTML
+        if (!supportsHtml) {
+          text = text.replace(/<[^>]*>/g, '');
+          $('#publishText').val(text);
+          updatePreview();
+        }
+
+        // Enviar solo texto (la imagen se maneja en el backend si se sube)
         $.ajax({
           url: '/api/publish',
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({ text }),
+          data: JSON.stringify({ text: text }),
           success: function (data) {
             if (data.status === 'ok') {
               $('#publishResult').html(
                 '<div class="alert alert-success">✅ Publicado correctamente</div>',
               );
+              // Opcional: limpiar después de publicar
+              // clearContent();
             } else {
               $('#publishResult').html(
                 '<div class="alert alert-danger">❌ Error: ' + data.error + '</div>',
               );
             }
           },
+          error: function (xhr) {
+            const errorMsg = xhr.responseJSON?.error || 'Error desconocido';
+            $('#publishResult').html(
+              '<div class="alert alert-danger">❌ Error: ' + errorMsg + '</div>',
+            );
+          },
         });
       }
+
+      // ============================================================
+      // INICIALIZACIÓN
+      // ============================================================
+      $(document).ready(function () {
+        loadAccountInfo();
+        // Actualizar previsualización al escribir
+        $('#publishText').on('input', updatePreview);
+        // Inicializar previsualización
+        updatePreview();
+      });
     </script>
   </body>
 </html>

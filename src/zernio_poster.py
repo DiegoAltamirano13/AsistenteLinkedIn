@@ -29,9 +29,6 @@ class ZernioClient:
             error_detail = response.text if response.text else str(e)
             raise Exception(f"Error en API Zernio: {response.status_code} - {error_detail}")
 
-    # ============================
-    # PERFILES Y CUENTAS
-    # ============================
     def get_profiles(self) -> List[Dict]:
         data = self._request("GET", "profiles")
         return data.get("profiles", [])
@@ -43,9 +40,6 @@ class ZernioClient:
         data = self._request("GET", "accounts", params=params)
         return data.get("accounts", [])
 
-    # ============================
-    # CONEXIÓN OAuth
-    # ============================
     def get_connect_url(self, platform: str, profile_id: str, redirect_uri: str) -> str:
         payload = {"profileId": profile_id, "redirectUri": redirect_uri}
         data = self._request("POST", f"connect/{platform}", data=payload)
@@ -55,14 +49,7 @@ class ZernioClient:
         payload = {"tempToken": temp_token, "connectToken": connect_token, "pageId": page_id}
         return self._request("POST", f"connect/{platform}/select-page", data=payload)
 
-    # ============================
-    # PUBLICACIÓN
-    # ============================
     def create_post(self, content: str, platforms: List[Dict], publish_now: bool = True) -> Dict:
-        """
-        Crea una publicación. Si publish_now=True, intenta publicar directamente.
-        Devuelve el post creado con su estado.
-        """
         payload = {
             "content": content,
             "platforms": platforms,
@@ -70,21 +57,15 @@ class ZernioClient:
         }
         data = self._request("POST", "posts", data=payload)
         post = data.get("post", {})
-        # Si el post quedó en draft y queríamos publicarlo, intentamos publicarlo
         if publish_now and post.get("status") == "draft":
             post_id = post.get("_id")
             if post_id:
                 try:
-                    # Intentar publicar el borrador
                     publish_result = self._request("POST", f"posts/{post_id}/publish")
-                    # Actualizar el post con el nuevo estado
                     post.update(publish_result.get("post", {}))
                 except Exception as e:
-                    # Si falla, dejamos el borrador y registramos el error
                     print(f"⚠️ No se pudo publicar el borrador automáticamente: {e}")
         return data
 
-    # Método alternativo: publicar un post existente por ID
     def publish_post(self, post_id: str) -> Dict:
-        """Publica un borrador existente."""
         return self._request("POST", f"posts/{post_id}/publish")

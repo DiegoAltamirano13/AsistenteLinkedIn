@@ -9,8 +9,183 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <style>
+      .lang-selector {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 8px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .lang-option {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        color: #94a3b8;
+        border: 1px solid transparent;
+      }
+      .lang-option:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #e2e8f0;
+      }
+      .lang-option.active {
+        background: rgba(108, 60, 225, 0.2);
+        color: #e2e8f0;
+        border-color: #6c3ce1;
+      }
+      .lang-option img {
+        width: 20px;
+        height: 15px;
+        border-radius: 2px;
+        object-fit: cover;
+      }
+      .config-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .config-section:first-of-type {
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0;
+      }
+      .config-section h4 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #e2e8f0;
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+      }
+      .badge-auto {
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        margin-left: 8px;
+      }
+      .helper-text {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 4px;
+      }
+      .feed-tag {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.06);
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin: 2px 4px 2px 0;
+      }
+      .theme-toggle {
+        width: 18px;
+        height: 18px;
+        accent-color: #6c3ce1;
+        cursor: pointer;
+      }
+      .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .theme-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+      .theme-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .theme-item input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        accent-color: #6c3ce1;
+        cursor: pointer;
+      }
+      .theme-item label {
+        font-size: 0.85rem;
+        color: #e2e8f0;
+        cursor: pointer;
+      }
+      .source-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+        padding-left: 20px;
+      }
+      .source-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 6px;
+        border-left: 2px solid rgba(255, 255, 255, 0.05);
+      }
+      .source-item input[type='checkbox'] {
+        width: 16px;
+        height: 16px;
+        accent-color: #6c3ce1;
+        cursor: pointer;
+      }
+      .source-item label {
+        font-size: 0.75rem;
+        color: #cbd5e1;
+        cursor: pointer;
+        word-break: break-all;
+      }
+      .theme-expandable {
+        cursor: pointer;
+        user-select: none;
+      }
+      .theme-expandable .chevron {
+        transition: transform 0.2s;
+        display: inline-block;
+        margin-left: 8px;
+      }
+      .theme-expandable.open .chevron {
+        transform: rotate(180deg);
+      }
+      .source-list {
+        display: none;
+        padding-left: 20px;
+        margin-top: 6px;
+      }
+      .source-list.open {
+        display: block;
+      }
+      .custom-source-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 6px;
+        border-left: 2px solid rgba(59, 130, 246, 0.3);
+      }
+    </style>
   </head>
   <body>
+    <!-- HEADER -->
     <div class="dashboard-header">
       <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px">
         <div
@@ -36,7 +211,7 @@
             </h1>
             <p style="color: #94a3b8; margin-top: 4px; font-size: 0.9rem">
               <i class="fas fa-plug"></i>
-              Conecta tus redes sociales con Zernio
+              Conecta tus redes sociales y personaliza el contenido
             </p>
           </div>
           <div style="display: flex; gap: 12px; align-items: center">
@@ -54,7 +229,7 @@
     </div>
 
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px 40px">
-      <!-- API Key -->
+      <!-- API Key y Profile ID -->
       <div class="glass-card" style="margin-bottom: 24px">
         <h3
           style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
@@ -79,16 +254,26 @@
             "
             placeholder="Ingresa tu API Key"
           />
-          <div class="mb-3">
-            <label class="form-label">📁 Profile ID</label>
+          <div style="min-width: 180px">
+            <label class="form-label" style="font-size: 0.8rem; color: #94a3b8">
+              📁 Profile ID
+            </label>
             <input
               type="text"
-              class="form-control"
               id="profileId"
-              placeholder="Ej: 6a3aab11ef4517c2bbde032a"
+              class="form-control"
+              style="
+                padding: 12px 16px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                color: #e2e8f0;
+                font-size: 0.95rem;
+              "
+              placeholder="Ej: 6a3aab..."
             />
           </div>
-          <button onclick="saveApiKey()" class="btn-primary-gradient">
+          <button onclick="saveApiKey()" class="btn-primary-gradient" style="align-self: flex-end">
             <i class="fas fa-save"></i>
             Guardar
           </button>
@@ -129,7 +314,7 @@
         </div>
       </div>
 
-      <!-- Conectar nueva cuenta -->
+      <!-- Conectar nueva cuenta (Zernio) -->
       <div class="glass-card" style="margin-bottom: 24px">
         <h3
           style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
@@ -171,14 +356,6 @@
             LinkedIn
           </button>
           <button
-            onclick="startConnect('reddit')"
-            class="btn-outline-glass"
-            style="padding: 10px 20px"
-          >
-            <i class="fab fa-reddit-alien" style="color: #ff4500"></i>
-            Reddit
-          </button>
-          <button
             onclick="startConnect('telegram')"
             class="btn-outline-glass"
             style="padding: 10px 20px"
@@ -190,26 +367,151 @@
         <div id="connectResult" class="mt-3"></div>
       </div>
 
-      <!-- Configuración avanzada -->
+      <!-- Configuración de contenido -->
       <div class="glass-card">
         <h3
           style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
         >
           <i class="fas fa-sliders-h" style="color: #8b5cf6"></i>
-          Configuración Avanzada
+          Preferencias de Contenido
         </h3>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-          "
-        >
-          <div>
-            <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px">
-              <i class="far fa-clock"></i>
-              Intervalo (horas)
-            </label>
+
+        <!-- Idioma -->
+        <div class="config-section">
+          <h4>
+            <i class="fas fa-globe" style="color: #3b82f6"></i>
+            Idioma del contenido
+          </h4>
+          <div class="lang-selector">
+            <div class="lang-option active" data-lang="es" onclick="selectLanguage('es')">
+              <img src="https://flagcdn.com/w20/es.png" />
+              Español
+            </div>
+            <div class="lang-option" data-lang="en" onclick="selectLanguage('en')">
+              <img src="https://flagcdn.com/w20/gb.png" />
+              English
+            </div>
+            <div class="lang-option" data-lang="pt" onclick="selectLanguage('pt')">
+              <img src="https://flagcdn.com/w20/pt.png" />
+              Português
+            </div>
+            <div class="lang-option" data-lang="fr" onclick="selectLanguage('fr')">
+              <img src="https://flagcdn.com/w20/fr.png" />
+              Français
+            </div>
+            <div class="lang-option" data-lang="de" onclick="selectLanguage('de')">
+              <img src="https://flagcdn.com/w20/de.png" />
+              Deutsch
+            </div>
+            <div class="lang-option" data-lang="it" onclick="selectLanguage('it')">
+              <img src="https://flagcdn.com/w20/it.png" />
+              Italiano
+            </div>
+          </div>
+          <div class="helper-text">
+            Los feeds de noticias y subreddits se ajustarán al idioma seleccionado.
+          </div>
+        </div>
+
+        <!-- Temas y fuentes -->
+        <div class="config-section">
+          <h4>
+            <i class="fas fa-tags" style="color: #f59e0b"></i>
+            Temas y fuentes de contenido
+            <span class="badge-auto">Toggles</span>
+          </h4>
+          <div id="themesContainer" class="theme-grid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 10px; color: #94a3b8">
+              <i class="fas fa-spinner fa-spin"></i>
+              Cargando temas...
+            </div>
+          </div>
+          <div class="helper-text">
+            Selecciona un tema para ver y activar sus fuentes individuales (RSS y subreddits).
+          </div>
+        </div>
+
+        <!-- Fuentes RSS personalizadas -->
+        <div class="config-section">
+          <h4>
+            <i class="fas fa-rss" style="color: #f59e0b"></i>
+            Fuentes RSS personalizadas
+          </h4>
+          <div
+            id="customFeedsList"
+            style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px"
+          ></div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <input
+              type="text"
+              id="customRssFeed"
+              class="form-control"
+              style="
+                flex: 1;
+                min-width: 200px;
+                padding: 10px 14px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                color: #e2e8f0;
+                font-size: 0.9rem;
+              "
+              placeholder="Agregar feed RSS personalizado"
+            />
+            <button onclick="addRssFeed()" class="btn-outline-glass" style="padding: 8px 16px">
+              <i class="fas fa-plus"></i>
+              Agregar
+            </button>
+          </div>
+          <div class="helper-text">
+            Los feeds que agregues aquí aparecerán como toggles en la lista de fuentes.
+          </div>
+        </div>
+
+        <!-- Subreddits personalizados -->
+        <div class="config-section">
+          <h4>
+            <i class="fab fa-reddit-alien" style="color: #ff4500"></i>
+            Subreddits personalizados
+          </h4>
+          <div
+            id="customSubredditsList"
+            style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px"
+          ></div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <input
+              type="text"
+              id="customSubreddit"
+              class="form-control"
+              style="
+                flex: 1;
+                min-width: 200px;
+                padding: 10px 14px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                color: #e2e8f0;
+                font-size: 0.9rem;
+              "
+              placeholder="Agregar subreddit personalizado"
+            />
+            <button onclick="addSubreddit()" class="btn-outline-glass" style="padding: 8px 16px">
+              <i class="fas fa-plus"></i>
+              Agregar
+            </button>
+          </div>
+          <div class="helper-text">
+            Los subreddits que agregues aquí aparecerán como toggles en la lista de fuentes.
+          </div>
+        </div>
+
+        <!-- Intervalo -->
+        <div class="config-section">
+          <h4>
+            <i class="far fa-clock" style="color: #34d399"></i>
+            Intervalo de publicación automática
+          </h4>
+          <div style="max-width: 200px">
             <input
               type="number"
               id="intervalHours"
@@ -223,36 +525,26 @@
                 color: #e2e8f0;
               "
               value="1"
+              min="1"
             />
           </div>
-          <div>
-            <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px">
-              <i class="fab fa-reddit-alien"></i>
-              Subreddits
-            </label>
-            <input
-              type="text"
-              id="subreddits"
-              class="form-control"
-              style="
-                width: 100%;
-                padding: 10px 14px;
-                background: rgba(255, 255, 255, 0.06);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 10px;
-                color: #e2e8f0;
-              "
-              placeholder="ProgrammerHumor, dankmemes, ..."
-            />
+          <div class="helper-text">
+            Cada cuántas horas se publicará automáticamente contenido rotativo.
           </div>
         </div>
-        <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
-          <button onclick="saveAdvancedConfig()" class="btn-primary-gradient">
+
+        <!-- Botones -->
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap">
+          <button onclick="saveAllConfig()" class="btn-primary-gradient">
             <i class="fas fa-save"></i>
-            Guardar todo
+            Guardar toda la configuración
+          </button>
+          <button onclick="resetToDefaults()" class="btn-outline-glass" style="padding: 10px 20px">
+            <i class="fas fa-undo-alt"></i>
+            Restaurar por defecto
           </button>
         </div>
-        <div id="advancedResult" class="mt-2" style="font-size: 0.85rem"></div>
+        <div id="saveResult" class="mt-2" style="font-size: 0.85rem"></div>
       </div>
     </div>
 
@@ -263,6 +555,12 @@
       // ============================================================
       let currentConfig = {};
       let accounts = [];
+      let selectedLang = 'es';
+      let availableThemes = [];
+      let activeRssFeeds = [];
+      let activeSubreddits = [];
+      let customRssFeeds = [];
+      let customSubreddits = [];
 
       // ============================================================
       // CARGAR CONFIGURACIÓN
@@ -273,8 +571,14 @@
           $('#apiKey').val(data.api_key || '');
           $('#profileId').val(data.profile_id || '');
           $('#intervalHours').val(data.interval_hours || 1);
-          $('#subreddits').val((data.subreddits || []).join(', '));
-          // Actualizar estado API
+          selectedLang = data.language || 'es';
+          activeRssFeeds = data.active_rss_feeds || [];
+          activeSubreddits = data.active_subreddits || [];
+          customRssFeeds = data.custom_rss_feeds || [];
+          customSubreddits = data.custom_subreddits || [];
+          updateLanguageUI();
+          loadThemes(selectedLang);
+          updateCustomLists();
           if (data.api_key) {
             $('#apiStatus')
               .removeClass('inactive')
@@ -286,30 +590,206 @@
               .addClass('inactive')
               .html('<i class="fas fa-circle" style="font-size:0.5rem;"></i> API Desconectada');
           }
-          // Cargar cuentas
           loadAccounts();
         });
       }
 
       // ============================================================
-      // CARGAR CUENTAS
+      // CARGAR TEMAS DEL SERVIDOR
+      // ============================================================
+      function loadThemes(lang) {
+        const container = $('#themesContainer');
+        container.html(
+          '<div style="grid-column:1/-1;text-align:center;padding:10px;color:#94A3B8;"><i class="fas fa-spinner fa-spin"></i> Cargando temas...</div>',
+        );
+        $.get('/api/themes/' + lang, function (data) {
+          if (data.error) {
+            container.html(
+              '<div style="grid-column:1/-1;text-align:center;color:#F87171;">Error: ' +
+                data.error +
+                '</div>',
+            );
+            return;
+          }
+          availableThemes = data;
+          renderThemes();
+        }).fail(function () {
+          container.html(
+            '<div style="grid-column:1/-1;text-align:center;color:#F87171;">Error al cargar temas</div>',
+          );
+        });
+      }
+
+      function renderThemes() {
+        const container = $('#themesContainer');
+        if (!availableThemes || availableThemes.length === 0) {
+          container.html(
+            '<div style="grid-column:1/-1;text-align:center;color:#94A3B8;">No hay temas disponibles para este idioma.</div>',
+          );
+          return;
+        }
+        let html = '';
+        availableThemes.forEach((theme) => {
+          const isChecked = (currentConfig.active_themes || []).includes(theme.key);
+          html += `
+                    <div class="theme-item theme-expandable" data-theme="${theme.key}" onclick="toggleTheme('${theme.key}')">
+                        <input type="checkbox" class="theme-toggle" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation();" />
+                        <label>${theme.label}</label>
+                        <span class="chevron" style="margin-left:auto;"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="source-list" id="sources-${theme.key}" style="grid-column:1/-1;padding-left:20px;">
+                        <div style="margin-top:4px;font-size:0.8rem;color:#94A3B8;">Fuentes RSS:</div>
+                        <div class="source-grid" id="rss-sources-${theme.key}">
+                            ${theme.rss
+                              .map(
+                                (url) => `
+                                <div class="source-item">
+                                    <input type="checkbox" class="source-toggle" data-type="rss" value="${url}" ${activeRssFeeds.includes(url) ? 'checked' : ''} />
+                                    <label>${url}</label>
+                                </div>
+                            `,
+                              )
+                              .join('')}
+                        </div>
+                        <div style="margin-top:8px;font-size:0.8rem;color:#94A3B8;">Subreddits:</div>
+                        <div class="source-grid" id="sub-sources-${theme.key}">
+                            ${theme.subreddits
+                              .map(
+                                (sub) => `
+                                <div class="source-item">
+                                    <input type="checkbox" class="source-toggle" data-type="subreddit" value="${sub}" ${activeSubreddits.includes(sub) ? 'checked' : ''} />
+                                    <label>${sub}</label>
+                                </div>
+                            `,
+                              )
+                              .join('')}
+                        </div>
+                    </div>
+                `;
+        });
+        container.html(html);
+        // Inicializar estado de expansión
+        $('.source-list').removeClass('open');
+      }
+
+      // ============================================================
+      // TOGGLE DE TEMA (expandir/contraer)
+      // ============================================================
+      function toggleTheme(themeKey) {
+        const sourceList = $('#sources-' + themeKey);
+        const themeItem = $('.theme-item[data-theme="' + themeKey + '"]');
+        sourceList.toggleClass('open');
+        themeItem.toggleClass('open');
+      }
+
+      // ============================================================
+      // IDIOMA
+      // ============================================================
+      function selectLanguage(lang) {
+        selectedLang = lang;
+        updateLanguageUI();
+        loadThemes(lang);
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Idioma cambiado. Guarda para aplicar.</span>',
+        );
+      }
+
+      function updateLanguageUI() {
+        $('.lang-option').removeClass('active');
+        $(`.lang-option[data-lang="${selectedLang}"]`).addClass('active');
+      }
+
+      // ============================================================
+      // ACTUALIZAR LISTAS PERSONALIZADAS
+      // ============================================================
+      function updateCustomLists() {
+        const feedList = $('#customFeedsList');
+        feedList.empty();
+        customRssFeeds.forEach((feed, i) => {
+          feedList.append(`
+                    <span class="feed-tag" style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);">
+                        <i class="fas fa-plus-circle" style="color:#3B82F6;font-size:0.6rem;"></i> ${feed}
+                        <i class="fas fa-times-circle" style="color:#F87171;margin-left:6px;cursor:pointer;" onclick="removeRssFeed(${i})"></i>
+                    </span>
+                `);
+        });
+        const subList = $('#customSubredditsList');
+        subList.empty();
+        customSubreddits.forEach((sub, i) => {
+          subList.append(`
+                    <span class="feed-tag" style="background:rgba(255,69,0,0.1);border:1px solid rgba(255,69,0,0.2);">
+                        <i class="fas fa-plus-circle" style="color:#FF4500;font-size:0.6rem;"></i> ${sub}
+                        <i class="fas fa-times-circle" style="color:#F87171;margin-left:6px;cursor:pointer;" onclick="removeSubreddit(${i})"></i>
+                    </span>
+                `);
+        });
+      }
+
+      function addRssFeed() {
+        const url = $('#customRssFeed').val().trim();
+        if (!url || !url.startsWith('http')) return alert('Introduce una URL válida (http://...)');
+        customRssFeeds.push(url);
+        $('#customRssFeed').val('');
+        updateCustomLists();
+        // También añadir a la lista de fuentes activas
+        activeRssFeeds.push(url);
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Feed agregado. Guarda para persistir.</span>',
+        );
+      }
+
+      function removeRssFeed(index) {
+        const removed = customRssFeeds[index];
+        customRssFeeds.splice(index, 1);
+        // Quitar de activas si estaba
+        const idx = activeRssFeeds.indexOf(removed);
+        if (idx !== -1) activeRssFeeds.splice(idx, 1);
+        updateCustomLists();
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Feed eliminado. Guarda para persistir.</span>',
+        );
+      }
+
+      function addSubreddit() {
+        const name = $('#customSubreddit').val().trim();
+        if (!name) return alert('Introduce un nombre de subreddit');
+        customSubreddits.push(name);
+        $('#customSubreddit').val('');
+        updateCustomLists();
+        activeSubreddits.push(name);
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Subreddit agregado. Guarda para persistir.</span>',
+        );
+      }
+
+      function removeSubreddit(index) {
+        const removed = customSubreddits[index];
+        customSubreddits.splice(index, 1);
+        const idx = activeSubreddits.indexOf(removed);
+        if (idx !== -1) activeSubreddits.splice(idx, 1);
+        updateCustomLists();
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Subreddit eliminado. Guarda para persistir.</span>',
+        );
+      }
+
+      // ============================================================
+      // CUENTAS (sin cambios)
       // ============================================================
       function loadAccounts() {
         const container = $('#accountsContainer');
         container.html(
           '<div style="text-align:center;padding:20px;color:#94A3B8;"><i class="fas fa-spinner fa-spin"></i> Cargando cuentas...</div>',
         );
-
         $.get('/api/accounts', function (data) {
           if (data.error) {
             container.html(`<div class="alert alert-danger">${data.error}</div>`);
             return;
           }
-          // data es el array de cuentas directamente
           accounts = data;
           if (accounts.length === 0) {
             container.html(
-              '<div style="padding:20px;color:#94A3B8;text-align:center;">No hay cuentas conectadas. Conecta una desde abajo.</div>',
+              '<div style="padding:20px;color:#94A3B8;text-align:center;">No hay cuentas conectadas. Conecta una desde arriba.</div>',
             );
             return;
           }
@@ -320,17 +800,14 @@
             const platformIcon = getPlatformIcon(platform);
             const isSelected = currentConfig.account_id === acc._id;
             html += `
-                        <div class="platform-card ${isSelected ? 'selected' : ''}"
-                             onclick="selectAccount('${acc._id}')" style="cursor:pointer;">
+                        <div class="platform-card ${isSelected ? 'selected' : ''}" onclick="selectAccount('${acc._id}')" style="cursor:pointer;">
                             <span class="platform-icon">${platformIcon}</span>
                             <div class="platform-name">${platform.charAt(0).toUpperCase() + platform.slice(1)}</div>
                             <div class="platform-status ${acc._id ? 'connected' : ''}">
                                 @${acc.username || 'sin usuario'}
                                 ${acc._id ? `<i class="fas fa-check-circle" style="color:#34D399;"></i>` : ''}
                             </div>
-                            <div style="font-size:0.7rem;color:#64748B;margin-top:4px;">
-                                ID: ${acc._id || 'N/A'}
-                            </div>
+                            <div style="font-size:0.7rem;color:#64748B;margin-top:4px;">ID: ${acc._id || 'N/A'}</div>
                             ${isSelected ? `<div style="margin-top:8px;font-size:0.8rem;color:#34D399;"><i class="fas fa-check"></i> Cuenta seleccionada</div>` : ''}
                         </div>
                     `;
@@ -344,17 +821,12 @@
         });
       }
 
-      // ============================================================
-      // SELECCIONAR CUENTA
-      // ============================================================
       function selectAccount(accountId) {
         const acc = accounts.find((a) => a._id === accountId);
         if (!acc) return;
-
         currentConfig.account_id = accountId;
         currentConfig.account_name = acc.username || acc.displayName || acc._id;
         currentConfig.platform_id = acc.platform;
-
         $.ajax({
           url: '/api/config',
           method: 'POST',
@@ -362,34 +834,27 @@
           data: JSON.stringify(currentConfig),
           success: function () {
             loadAccounts();
-            showToast('Cuenta seleccionada correctamente', 'success');
+            alert('Cuenta seleccionada correctamente');
           },
           error: function () {
-            showToast('Error al guardar la selección', 'error');
+            alert('Error al guardar la selección');
           },
         });
       }
 
       // ============================================================
-      // CONECTAR NUEVA CUENTA (OAuth)
+      // CONECTAR PLATAFORMA (OAuth)
       // ============================================================
       function startConnect(platform) {
-        // Obtener profileId de la configuración o de la primera cuenta
         let profileId = currentConfig.profile_id;
         if (!profileId && accounts.length > 0) {
           profileId = accounts[0].profileId?._id || accounts[0].profileId;
         }
-        if (!profileId) {
-          // Si no hay profileId, usar 'default' (pero es mejor pedirlo)
-          profileId = 'default';
-        }
+        if (!profileId) profileId = 'default';
         const redirectUri = window.location.origin + '/callback';
-
         $('#connectResult').html(
           '<div class="alert alert-info">Iniciando conexión con ' + platform + '...</div>',
         );
-        showToast(' ' + profileId + '  ' + redirectUri, 'success');
-
         $.ajax({
           url: '/api/connect/' + platform,
           method: 'POST',
@@ -397,9 +862,7 @@
           data: JSON.stringify({ profileId: profileId, redirectUri: redirectUri }),
           success: function (data) {
             if (data.authUrl) {
-              // Abrir ventana para autorización
               const authWindow = window.open(data.authUrl, '_blank', 'width=600,height=700');
-              // Esperar a que se cierre y recargar cuentas
               const checkWindow = setInterval(() => {
                 if (authWindow.closed) {
                   clearInterval(checkWindow);
@@ -426,7 +889,7 @@
       }
 
       // ============================================================
-      // GUARDAR API KEY
+      // GUARDAR CONFIGURACIÓN
       // ============================================================
       function saveApiKey() {
         const key = $('#apiKey').val();
@@ -437,40 +900,83 @@
           return;
         }
         currentConfig.api_key = key;
-        saveConfig();
+        saveAllConfig();
       }
 
-      function saveAdvancedConfig() {
-        currentConfig.interval_hours = parseInt($('#intervalHours').val()) || 1;
-        currentConfig.subreddits = $('#subreddits')
-          .val()
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-        saveConfig();
-      }
+      function saveAllConfig() {
+        // Recoger temas seleccionados
+        const activeThemes = [];
+        $('.theme-toggle:checked').each(function () {
+          const themeKey = $(this).closest('.theme-item').data('theme');
+          if (themeKey) activeThemes.push(themeKey);
+        });
 
-      function saveConfig() {
+        // Recoger fuentes activas (RSS y subreddits)
+        const rssFeeds = [];
+        const subreddits = [];
+        $('.source-toggle:checked').each(function () {
+          const type = $(this).data('type');
+          const value = $(this).val();
+          if (type === 'rss') rssFeeds.push(value);
+          else subreddits.push(value);
+        });
+
+        // Unir con las personalizadas
+        rssFeeds.push(...customRssFeeds);
+        subreddits.push(...customSubreddits);
+
+        const data = {
+          api_key: $('#apiKey').val().trim(),
+          profile_id: $('#profileId').val().trim(),
+          language: selectedLang,
+          active_themes: activeThemes,
+          active_rss_feeds: [...new Set(rssFeeds)],
+          active_subreddits: [...new Set(subreddits)],
+          custom_rss_feeds: customRssFeeds,
+          custom_subreddits: customSubreddits,
+          interval_hours: parseInt($('#intervalHours').val()) || 1,
+          account_id: currentConfig.account_id || '',
+          platform_id: currentConfig.platform_id || '',
+          account_name: currentConfig.account_name || '',
+        };
+
         $.ajax({
           url: '/api/config',
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify(currentConfig),
+          data: JSON.stringify(data),
           success: function () {
-            $('#apiResult').html(
-              '<span style="color:#34D399;"><i class="fas fa-check-circle"></i> Configuración guardada</span>',
+            $('#saveResult').html(
+              '<span style="color:#34D399;"><i class="fas fa-check-circle"></i> ✅ Configuración guardada correctamente</span>',
             );
-            $('#advancedResult').html(
-              '<span style="color:#34D399;"><i class="fas fa-check-circle"></i> Configuración guardada</span>',
-            );
-            loadConfig();
+            currentConfig = data;
+            loadAccounts();
           },
           error: function () {
-            $('#apiResult').html(
-              '<span style="color:#F87171;"><i class="fas fa-exclamation-circle"></i> Error al guardar</span>',
+            $('#saveResult').html(
+              '<span style="color:#F87171;"><i class="fas fa-exclamation-circle"></i> ❌ Error al guardar la configuración</span>',
             );
           },
         });
+      }
+
+      // ============================================================
+      // RESTAURAR POR DEFECTO
+      // ============================================================
+      function resetToDefaults() {
+        if (!confirm('¿Restaurar la configuración a los valores por defecto?')) return;
+        selectedLang = 'es';
+        customRssFeeds = [];
+        customSubreddits = [];
+        activeRssFeeds = [];
+        activeSubreddits = [];
+        updateLanguageUI();
+        loadThemes(selectedLang);
+        updateCustomLists();
+        $('#intervalHours').val(1);
+        $('#saveResult').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-info-circle"></i> Configuración restaurada. Guarda para aplicar.</span>',
+        );
       }
 
       // ============================================================
@@ -495,16 +1001,7 @@
         return icons[platform] || '<i class="fas fa-share-alt" style="color:#6C3CE1;"></i>';
       }
 
-      function showToast(message, type) {
-        alert(message);
-      }
-
-      // ============================================================
-      // INICIALIZAR
-      // ============================================================
-      $(document).ready(function () {
-        loadConfig();
-      });
+      $(document).ready(loadConfig);
     </script>
   </body>
 </html>
