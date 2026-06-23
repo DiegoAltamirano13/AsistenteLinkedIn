@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plataformas - Agente Social</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="container py-4">
+      <h2>📡 Plataformas y cuentas</h2>
+      <div id="platformsList">
+        <div class="spinner-border text-primary" role="status"></div>
+        <span>Cargando...</span>
+      </div>
+      <a href="/" class="btn btn-secondary mt-3">Volver</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $.get('/api/platforms', function (data) {
+          if (data.error) {
+            $('#platformsList').html('<div class="alert alert-danger">' + data.error + '</div>');
+            return;
+          }
+          let html = '';
+          data.forEach((p) => {
+            html += `<div class="card mb-3"><div class="card-header bg-info text-white">${p.name}</div><div class="card-body">`;
+            html += `<p>ID: ${p.id}</p>`;
+            html += `<h6>Cuentas vinculadas:</h6>`;
+            // Obtener cuentas para esta plataforma
+            $.ajax({
+              url: '/api/accounts/' + p.id,
+              async: false,
+              success: function (accounts) {
+                if (accounts.error) {
+                  html += `<p class="text-danger">${accounts.error}</p>`;
+                } else if (accounts.length === 0) {
+                  html += `<p class="text-muted">No hay cuentas vinculadas.</p>`;
+                } else {
+                  html += `<ul>`;
+                  accounts.forEach((a) => {
+                    html += `<li>${a.name || a.username} (ID: ${a.id})</li>`;
+                  });
+                  html += `</ul>`;
+                }
+              },
+            });
+            html += `</div></div>`;
+          });
+          $('#platformsList').html(html);
+        }).fail(function () {
+          $('#platformsList').html(
+            '<div class="alert alert-danger">Error al cargar plataformas. ¿API Key configurada?</div>',
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

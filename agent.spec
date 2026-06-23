@@ -1,0 +1,28 @@
+# agent.spec
+a = Analysis(['main_web.py'],
+             pathex=[],
+             binaries=[],
+             datas=[('templates', 'templates'), ('static', 'static'), ('src', 'src')],
+             hiddenimports=['googleapiclient', 'google_auth_oauthlib', 'apscheduler'],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=None,
+             noarchive=False)
+pyz = PYZ(a.pure, a.zipped_data, cipher=None)
+exe = EXE(pyz,
+          a.scripts,
+          a.binaries,
+          a.zipfiles,
+          a.datas,
+          [],
+          name='AgentSocial',
+          debug=False,
+          bootloader_ignore_signals=False,
+          strip=False,
+          upx=True,
+          upx_exclude=[],
+          runtime_tmpdir=None,
+          console=True )  # console=True para ver logs, o False para ventana oculta

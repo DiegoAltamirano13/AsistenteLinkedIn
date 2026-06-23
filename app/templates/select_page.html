@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Seleccionar página</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="container" style="max-width: 600px; margin: 40px auto; padding: 24px">
+      <div class="glass-card">
+        <h2>
+          <i class="fas fa-edit" style="color: #6c3ce1"></i>
+          Selecciona la página/perfil
+        </h2>
+        <p style="color: #94a3b8; margin: 12px 0">
+          Elige desde qué página quieres publicar en {{ platform }}.
+        </p>
+        <div id="pagesList">
+          <p style="color: #94a3b8">
+            <i class="fas fa-spinner fa-spin"></i>
+            Cargando páginas...
+          </p>
+        </div>
+        <div id="result" style="margin-top: 16px"></div>
+        <a
+          href="/config"
+          class="btn-outline-glass"
+          style="display: inline-block; margin-top: 16px; text-decoration: none"
+        >
+          <i class="fas fa-arrow-left"></i>
+          Volver a configuración
+        </a>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      const platform = '{{ platform }}';
+      const tempToken = '{{ temp_token }}';
+      const connectToken = '{{ connect_token }}';
+
+      $(document).ready(function () {
+        // Obtener páginas disponibles desde la API de Zernio
+        // Nota: Esto requiere un endpoint adicional en routes.py
+        // Por ahora, simulamos con datos de ejemplo.
+        // En la práctica, deberías obtener las páginas del metadata de la cuenta
+        // o usar un endpoint específico de Zernio.
+
+        // Como tenemos el metadata en la cuenta, podemos obtenerlo desde /api/accounts
+        $.get('/api/accounts', function (data) {
+          if (data.error) {
+            $('#pagesList').html(`<p style="color:#F87171;">Error: ${data.error}</p>`);
+            return;
+          }
+          // Buscar la cuenta de la plataforma actual
+          const account = data.find((a) => a.platform === platform);
+          if (!account || !account.metadata || !account.metadata.availablePages) {
+            $('#pagesList').html(
+              '<p style="color:#F87171;">No se encontraron páginas disponibles.</p>',
+            );
+            return;
+          }
+          const pages = account.metadata.availablePages;
+          let html = '<div style="display:grid;gap:8px;">';
+          pages.forEach((page) => {
+            html += `
+                    <div style="padding:12px;background:rgba(255,255,255,0.04);border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.06);"
+                         onclick="selectPage('${page.id}')">
+                        <strong>${page.name}</strong>
+                        <span style="color:#94A3B8;font-size:0.85rem;">@${page.username}</span>
+                        <span style="color:#94A3B8;font-size:0.75rem;display:block;">ID: ${page.id}</span>
+                    </div>
+                `;
+          });
+          html += '</div>';
+          $('#pagesList').html(html);
+        }).fail(function () {
+          $('#pagesList').html('<p style="color:#F87171;">Error al cargar páginas</p>');
+        });
+      });
+
+      function selectPage(pageId) {
+        $('#result').html(
+          '<span style="color:#94A3B8;"><i class="fas fa-spinner fa-spin"></i> Seleccionando página...</span>',
+        );
+        $.ajax({
+          url: '/api/select-page',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            platform: platform,
+            tempToken: tempToken,
+            connectToken: connectToken,
+            pageId: pageId,
+          }),
+          success: function (data) {
+            if (data.status === 'ok') {
+              $('#result').html(`
+                        <div style="color:#34D399;padding:12px;background:rgba(52,211,153,0.1);border-radius:8px;">
+                            ✅ ${data.message}
+                            <br>Account ID: ${data.account_id}
+                        </div>
+                    `);
+              setTimeout(() => {
+                window.location.href = '/config';
+              }, 3000);
+            } else {
+              $('#result').html(`<span style="color:#F87171;">❌ ${data.error}</span>`);
+            }
+          },
+          error: function (xhr) {
+            $('#result').html(
+              `<span style="color:#F87171;">❌ Error: ${xhr.responseJSON?.error || 'Desconocido'}</span>`,
+            );
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

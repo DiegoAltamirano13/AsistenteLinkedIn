@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración - Agente Social</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <div class="dashboard-header">
+      <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+          "
+        >
+          <div>
+            <h1>
+              <i
+                class="fas fa-robot"
+                style="
+                  background: linear-gradient(135deg, #6c3ce1, #3b82f6);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                "
+              ></i>
+              Agente Social
+            </h1>
+            <p style="color: #94a3b8; margin-top: 4px; font-size: 0.9rem">
+              <i class="fas fa-plug"></i>
+              Conecta tus redes sociales con Zernio
+            </p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center">
+            <span id="apiStatus" class="status-badge inactive">
+              <i class="fas fa-circle" style="font-size: 0.5rem"></i>
+              API Desconectada
+            </span>
+            <a href="/" class="btn-outline-glass" style="text-decoration: none">
+              <i class="fas fa-arrow-left"></i>
+              Volver
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 24px 40px">
+      <!-- API Key -->
+      <div class="glass-card" style="margin-bottom: 24px">
+        <h3
+          style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
+        >
+          <i class="fas fa-key" style="color: #6c3ce1"></i>
+          API Key de Zernio
+        </h3>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap">
+          <input
+            type="password"
+            id="apiKey"
+            class="form-control"
+            style="
+              flex: 1;
+              min-width: 200px;
+              padding: 12px 16px;
+              background: rgba(255, 255, 255, 0.06);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 12px;
+              color: #e2e8f0;
+              font-size: 0.95rem;
+            "
+            placeholder="Ingresa tu API Key"
+          />
+          <div class="mb-3">
+            <label class="form-label">📁 Profile ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="profileId"
+              placeholder="Ej: 6a3aab11ef4517c2bbde032a"
+            />
+          </div>
+          <button onclick="saveApiKey()" class="btn-primary-gradient">
+            <i class="fas fa-save"></i>
+            Guardar
+          </button>
+        </div>
+        <div id="apiResult" class="mt-2" style="font-size: 0.85rem"></div>
+      </div>
+
+      <!-- Cuentas conectadas -->
+      <div class="glass-card" style="margin-bottom: 24px">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+          "
+        >
+          <h3 style="display: flex; align-items: center; gap: 10px; color: #e2e8f0">
+            <i class="fas fa-link" style="color: #3b82f6"></i>
+            Cuentas conectadas
+          </h3>
+          <button
+            onclick="loadAccounts()"
+            class="btn-outline-glass"
+            style="padding: 8px 18px; font-size: 0.85rem"
+          >
+            <i class="fas fa-sync-alt"></i>
+            Actualizar
+          </button>
+        </div>
+        <div id="accountsContainer">
+          <div style="text-align: center; padding: 20px; color: #94a3b8">
+            <i class="fas fa-spinner fa-spin"></i>
+            Cargando cuentas...
+          </div>
+        </div>
+      </div>
+
+      <!-- Conectar nueva cuenta -->
+      <div class="glass-card" style="margin-bottom: 24px">
+        <h3
+          style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
+        >
+          <i class="fas fa-plus-circle" style="color: #34d399"></i>
+          Conectar nueva plataforma
+        </h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <button
+            onclick="startConnect('facebook')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-facebook" style="color: #1877f2"></i>
+            Facebook
+          </button>
+          <button
+            onclick="startConnect('instagram')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-instagram" style="color: #e4405f"></i>
+            Instagram
+          </button>
+          <button
+            onclick="startConnect('twitter')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-twitter" style="color: #1da1f2"></i>
+            Twitter
+          </button>
+          <button
+            onclick="startConnect('linkedin')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-linkedin" style="color: #0a66c2"></i>
+            LinkedIn
+          </button>
+          <button
+            onclick="startConnect('reddit')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-reddit-alien" style="color: #ff4500"></i>
+            Reddit
+          </button>
+          <button
+            onclick="startConnect('telegram')"
+            class="btn-outline-glass"
+            style="padding: 10px 20px"
+          >
+            <i class="fab fa-telegram" style="color: #26a5e4"></i>
+            Telegram
+          </button>
+        </div>
+        <div id="connectResult" class="mt-3"></div>
+      </div>
+
+      <!-- Configuración avanzada -->
+      <div class="glass-card">
+        <h3
+          style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: #e2e8f0"
+        >
+          <i class="fas fa-sliders-h" style="color: #8b5cf6"></i>
+          Configuración Avanzada
+        </h3>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+          "
+        >
+          <div>
+            <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px">
+              <i class="far fa-clock"></i>
+              Intervalo (horas)
+            </label>
+            <input
+              type="number"
+              id="intervalHours"
+              class="form-control"
+              style="
+                width: 100%;
+                padding: 10px 14px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                color: #e2e8f0;
+              "
+              value="1"
+            />
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px">
+              <i class="fab fa-reddit-alien"></i>
+              Subreddits
+            </label>
+            <input
+              type="text"
+              id="subreddits"
+              class="form-control"
+              style="
+                width: 100%;
+                padding: 10px 14px;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+                color: #e2e8f0;
+              "
+              placeholder="ProgrammerHumor, dankmemes, ..."
+            />
+          </div>
+        </div>
+        <div style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap">
+          <button onclick="saveAdvancedConfig()" class="btn-primary-gradient">
+            <i class="fas fa-save"></i>
+            Guardar todo
+          </button>
+        </div>
+        <div id="advancedResult" class="mt-2" style="font-size: 0.85rem"></div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // ============================================================
+      // GLOBALS
+      // ============================================================
+      let currentConfig = {};
+      let accounts = [];
+
+      // ============================================================
+      // CARGAR CONFIGURACIÓN
+      // ============================================================
+      function loadConfig() {
+        $.get('/api/config', function (data) {
+          currentConfig = data;
+          $('#apiKey').val(data.api_key || '');
+          $('#profileId').val(data.profile_id || '');
+          $('#intervalHours').val(data.interval_hours || 1);
+          $('#subreddits').val((data.subreddits || []).join(', '));
+          // Actualizar estado API
+          if (data.api_key) {
+            $('#apiStatus')
+              .removeClass('inactive')
+              .addClass('active')
+              .html('<i class="fas fa-circle" style="font-size:0.5rem;"></i> API Conectada');
+          } else {
+            $('#apiStatus')
+              .removeClass('active')
+              .addClass('inactive')
+              .html('<i class="fas fa-circle" style="font-size:0.5rem;"></i> API Desconectada');
+          }
+          // Cargar cuentas
+          loadAccounts();
+        });
+      }
+
+      // ============================================================
+      // CARGAR CUENTAS
+      // ============================================================
+      function loadAccounts() {
+        const container = $('#accountsContainer');
+        container.html(
+          '<div style="text-align:center;padding:20px;color:#94A3B8;"><i class="fas fa-spinner fa-spin"></i> Cargando cuentas...</div>',
+        );
+
+        $.get('/api/accounts', function (data) {
+          if (data.error) {
+            container.html(`<div class="alert alert-danger">${data.error}</div>`);
+            return;
+          }
+          // data es el array de cuentas directamente
+          accounts = data;
+          if (accounts.length === 0) {
+            container.html(
+              '<div style="padding:20px;color:#94A3B8;text-align:center;">No hay cuentas conectadas. Conecta una desde abajo.</div>',
+            );
+            return;
+          }
+          let html =
+            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">';
+          accounts.forEach((acc) => {
+            const platform = acc.platform || 'unknown';
+            const platformIcon = getPlatformIcon(platform);
+            const isSelected = currentConfig.account_id === acc._id;
+            html += `
+                        <div class="platform-card ${isSelected ? 'selected' : ''}"
+                             onclick="selectAccount('${acc._id}')" style="cursor:pointer;">
+                            <span class="platform-icon">${platformIcon}</span>
+                            <div class="platform-name">${platform.charAt(0).toUpperCase() + platform.slice(1)}</div>
+                            <div class="platform-status ${acc._id ? 'connected' : ''}">
+                                @${acc.username || 'sin usuario'}
+                                ${acc._id ? `<i class="fas fa-check-circle" style="color:#34D399;"></i>` : ''}
+                            </div>
+                            <div style="font-size:0.7rem;color:#64748B;margin-top:4px;">
+                                ID: ${acc._id || 'N/A'}
+                            </div>
+                            ${isSelected ? `<div style="margin-top:8px;font-size:0.8rem;color:#34D399;"><i class="fas fa-check"></i> Cuenta seleccionada</div>` : ''}
+                        </div>
+                    `;
+          });
+          html += '</div>';
+          container.html(html);
+        }).fail(function () {
+          container.html(
+            '<div class="alert alert-danger">Error al cargar cuentas. ¿API Key válida?</div>',
+          );
+        });
+      }
+
+      // ============================================================
+      // SELECCIONAR CUENTA
+      // ============================================================
+      function selectAccount(accountId) {
+        const acc = accounts.find((a) => a._id === accountId);
+        if (!acc) return;
+
+        currentConfig.account_id = accountId;
+        currentConfig.account_name = acc.username || acc.displayName || acc._id;
+        currentConfig.platform_id = acc.platform;
+
+        $.ajax({
+          url: '/api/config',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(currentConfig),
+          success: function () {
+            loadAccounts();
+            showToast('Cuenta seleccionada correctamente', 'success');
+          },
+          error: function () {
+            showToast('Error al guardar la selección', 'error');
+          },
+        });
+      }
+
+      // ============================================================
+      // CONECTAR NUEVA CUENTA (OAuth)
+      // ============================================================
+      function startConnect(platform) {
+        // Obtener profileId de la configuración o de la primera cuenta
+        let profileId = currentConfig.profile_id;
+        if (!profileId && accounts.length > 0) {
+          profileId = accounts[0].profileId?._id || accounts[0].profileId;
+        }
+        if (!profileId) {
+          // Si no hay profileId, usar 'default' (pero es mejor pedirlo)
+          profileId = 'default';
+        }
+        const redirectUri = window.location.origin + '/callback';
+
+        $('#connectResult').html(
+          '<div class="alert alert-info">Iniciando conexión con ' + platform + '...</div>',
+        );
+        showToast(' ' + profileId + '  ' + redirectUri, 'success');
+
+        $.ajax({
+          url: '/api/connect/' + platform,
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ profileId: profileId, redirectUri: redirectUri }),
+          success: function (data) {
+            if (data.authUrl) {
+              // Abrir ventana para autorización
+              const authWindow = window.open(data.authUrl, '_blank', 'width=600,height=700');
+              // Esperar a que se cierre y recargar cuentas
+              const checkWindow = setInterval(() => {
+                if (authWindow.closed) {
+                  clearInterval(checkWindow);
+                  loadAccounts();
+                  $('#connectResult').html(
+                    '<div class="alert alert-success">✅ Conexión completada. Recargando cuentas...</div>',
+                  );
+                }
+              }, 1000);
+            } else {
+              $('#connectResult').html(
+                '<div class="alert alert-danger">❌ No se pudo obtener la URL de autorización</div>',
+              );
+            }
+          },
+          error: function (xhr) {
+            $('#connectResult').html(
+              '<div class="alert alert-danger">❌ Error: ' +
+                (xhr.responseJSON?.error || 'desconocido') +
+                '</div>',
+            );
+          },
+        });
+      }
+
+      // ============================================================
+      // GUARDAR API KEY
+      // ============================================================
+      function saveApiKey() {
+        const key = $('#apiKey').val();
+        if (!key) {
+          $('#apiResult').html(
+            '<span style="color:#F87171;"><i class="fas fa-exclamation-circle"></i> Ingresa una API Key</span>',
+          );
+          return;
+        }
+        currentConfig.api_key = key;
+        saveConfig();
+      }
+
+      function saveAdvancedConfig() {
+        currentConfig.interval_hours = parseInt($('#intervalHours').val()) || 1;
+        currentConfig.subreddits = $('#subreddits')
+          .val()
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        saveConfig();
+      }
+
+      function saveConfig() {
+        $.ajax({
+          url: '/api/config',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(currentConfig),
+          success: function () {
+            $('#apiResult').html(
+              '<span style="color:#34D399;"><i class="fas fa-check-circle"></i> Configuración guardada</span>',
+            );
+            $('#advancedResult').html(
+              '<span style="color:#34D399;"><i class="fas fa-check-circle"></i> Configuración guardada</span>',
+            );
+            loadConfig();
+          },
+          error: function () {
+            $('#apiResult').html(
+              '<span style="color:#F87171;"><i class="fas fa-exclamation-circle"></i> Error al guardar</span>',
+            );
+          },
+        });
+      }
+
+      // ============================================================
+      // UTILIDADES
+      // ============================================================
+      function getPlatformIcon(platform) {
+        const icons = {
+          facebook: '<i class="fab fa-facebook" style="color:#1877F2;"></i>',
+          instagram: '<i class="fab fa-instagram" style="color:#E4405F;"></i>',
+          twitter: '<i class="fab fa-x-twitter" style="color:#000000;"></i>',
+          linkedin: '<i class="fab fa-linkedin" style="color:#0A66C2;"></i>',
+          reddit: '<i class="fab fa-reddit-alien" style="color:#FF4500;"></i>',
+          telegram: '<i class="fab fa-telegram" style="color:#26A5E4;"></i>',
+          whatsapp: '<i class="fab fa-whatsapp" style="color:#25D366;"></i>',
+          youtube: '<i class="fab fa-youtube" style="color:#FF0000;"></i>',
+          tiktok: '<i class="fab fa-tiktok" style="color:#000000;"></i>',
+          pinterest: '<i class="fab fa-pinterest" style="color:#E60023;"></i>',
+          threads: '<i class="fab fa-threads" style="color:#000000;"></i>',
+          bluesky: '<i class="fas fa-cloud" style="color:#1185FE;"></i>',
+          snapchat: '<i class="fab fa-snapchat" style="color:#FFFC00;"></i>',
+        };
+        return icons[platform] || '<i class="fas fa-share-alt" style="color:#6C3CE1;"></i>';
+      }
+
+      function showToast(message, type) {
+        alert(message);
+      }
+
+      // ============================================================
+      // INICIALIZAR
+      // ============================================================
+      $(document).ready(function () {
+        loadConfig();
+      });
+    </script>
+  </body>
+</html>
